@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="-114.0" y="217.0">controlling.contractRegister.model.VerificationToken</node>
+    <node x="249.75" y="143.0">controlling.contractRegister.model.Contract</node>
+    <node x="-112.41666666666669" y="64.0">controlling.contractRegister.model.FinancialDistributionMatrix</node>
+    <node x="311.0" y="-15.0">controlling.contractRegister.model.CustomerAddress</node>
+    <node x="-114.0" y="-15.0">controlling.contractRegister.model.Project</node>
+    <node x="1.9999999999999716" y="-15.0">controlling.contractRegister.model.Category</node>
+    <node x="252.33333333333331" y="64.0">controlling.contractRegister.model.Customer</node>
+    <node x="-70.5" y="296.0">controlling.contractRegister.model.User</node>
+    <node x="385.3333333333333" y="64.0">controlling.contractRegister.model.ContractAttachment</node>
+    <node x="131.99999999999997" y="-15.0">controlling.contractRegister.model.CustomerDetails</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="controlling.contractRegister.model.Customer" target="controlling.contractRegister.model.CustomerAddress" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="308.8333333333333" y="39.0" />
+      <point x="394.0" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.model.CustomerAddress" target="controlling.contractRegister.model.Customer" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="394.0" y="39.0" />
+      <point x="308.8333333333333" y="39.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.model.Contract" target="controlling.contractRegister.model.ContractAttachment" relationship="TO_MANY">
+      <point x="0.0" y="-14.5" />
+      <point x="302.75" y="118.0" />
+      <point x="476.83333333333326" y="118.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.model.FinancialDistributionMatrix" target="controlling.contractRegister.model.Category" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="1.5833333333333144" y="39.0" />
+      <point x="56.99999999999997" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.model.Contract" target="controlling.contractRegister.model.Customer" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="302.75" y="118.0" />
+      <point x="308.8333333333333" y="118.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.model.CustomerDetails" target="controlling.contractRegister.model.Customer" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="211.5" y="39.0" />
+      <point x="308.8333333333333" y="39.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.model.Customer" target="controlling.contractRegister.model.CustomerDetails" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="308.8333333333333" y="39.0" />
+      <point x="211.5" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.model.Contract" target="controlling.contractRegister.model.FinancialDistributionMatrix" relationship="TO_MANY">
+      <point x="0.0" y="-14.5" />
+      <point x="302.75" y="118.0" />
+      <point x="1.5833333333333428" y="118.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.model.FinancialDistributionMatrix" target="controlling.contractRegister.model.Contract" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="1.5833333333333428" y="118.0" />
+      <point x="302.75" y="118.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.model.ContractAttachment" target="controlling.contractRegister.model.Contract" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="476.83333333333326" y="118.0" />
+      <point x="302.75" y="118.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.model.User" target="controlling.contractRegister.model.VerificationToken" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.model.VerificationToken" target="controlling.contractRegister.model.User" relationship="TO_ONE">
+      <point x="0.0" y="14.5" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.model.FinancialDistributionMatrix" target="controlling.contractRegister.model.Project" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="1.5833333333333144" y="39.0" />
+      <point x="-66.0" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.5" showDependencies="true" x="237.5" y="165.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

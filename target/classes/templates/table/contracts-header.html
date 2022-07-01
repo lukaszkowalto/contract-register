@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="contracts-header">
+
+    <table class="table table-hover table-responsive-md">
+        <thead class="bg-secondary text-white">
+        <tr>
+            <th th:text="#{contracts.contract.header.document-date}"></th>
+            <th th:text="#{contracts.contract.header.number}"></th>
+            <th th:text="#{contracts.contract.header.customer}"></th>
+            <th th:text="#{contracts.contract.header.currency}"></th>
+            <th th:text="#{contracts.contract.header.amount}"></th>
+            <th th:text="#{contracts.contract.header.amount-VAT}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contract : ${contracts}">
+            <td th:text="${contract.documentDate}"></td>
+            <td th:text="${contract.contractNumber}"></td>
+            <td th:text="${contract?.customer?.getCustomerHeader()}"></td>
+            <td th:text="${contract.currency}"></td>
+            <td th:text="${#numbers.formatDecimal(contract.amount, 1, 'WHITESPACE', 2, 'DEFAULT')}"></td>
+            <td th:text="${#numbers.formatDecimal(contract.amountVAT, 1, 'WHITESPACE', 2, 'DEFAULT')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-outline-secondary btn-block" href="/contracts" role="button"
+       th:text="#{contracts.select-contracts}"></a>
+</div>
+</body>
+</html>

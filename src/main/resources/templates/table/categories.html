@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="categories">
+    <form align="center" id="filter" method="post" th:action="@{/categories}">
+        <div class="form-row justify-content-center mb-3">
+            <div class="form-group col-md-6">
+                <input aria-label="filter" class="form-control" th:name="pattern"
+                       th:placeholder="#{categories.filter.placeholder}" type="search">
+            </div>
+
+            <div class="form-group col-md-1">
+                <button class="btn btn-outline-primary" name="filterCategory" type="submit">
+                    <span class="btn-label"><i class="fas fa-filter"></i></span>
+                </button>
+            </div>
+        </div>
+    </form>
+    <div class="table-responsive table-body">
+        <table class="table table-hover">
+            <thead class="bg-secondary text-white">
+            <tr>
+                <th th:text="#{categories.category.header.id}"></th>
+                <th th:text="#{categories.category.header.year}"></th>
+                <th th:text="#{categories.category.header.symbol}"></th>
+                <th th:text="#{categories.category.header.parent}"></th>
+                <th th:text="#{categories.category.header.type}"></th>
+                <th th:text="#{categories.category.header.name}"></th>
+                <th th:text="#{categories.category.header.description}"></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="category : ${categories.page}">
+                <td th:text="${category.id}"></td>
+                <td th:text="${#numbers.formatDecimal(category.year,4,0)}"></td>
+                <td th:text="${category.symbol}"></td>
+                <td th:text="${category?.parentCategory?.getCategoryHeader()}"></td>
+                <td th:text="${category.categoryType.name}"></td>
+                <td th:text="${category.name}"></td>
+                <td th:text="${category.description}"></td>
+                <td>
+                    <button class="btn btn-outline-danger" data-toggle="modal"
+                            th:attr="data-target='#modal-delete-category'+${category.id}"
+                            type="button">
+                        <span class="btn-label"><i class="fas fa-trash-alt"></i></span>
+                    </button>
+                    <div th:replace="/modal/delete-category-modal :: delete-category"/>
+                </td>
+                <td>
+                    <button class="btn btn-outline-primary" th:attr="onclick=|prepareModalCategory('${category.id}')| "
+                            type="button">
+                        <span class="btn-label"><i class="fas fa-pencil-alt"></i></span>
+                    </button>
+                    <div th:replace="/modal/update-category-modal :: update-category"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <nav aria-label="Page navigation" class="paging">
+            <ul class="pagination" th:if="${categories.page.totalPages > 1}">
+                <li class="page-item" th:classappend="${!categories.paging.isPrevEnabled()? 'disabled' : ''}">
+                    <a class="page-link" tabindex="-1"
+                       th:href="@{'/categories?pageNumber=' + ${categories.paging.pageNumber - 1}}"><i
+                            class="bi bi-chevron-left"></i></a>
+                </li>
+                <th:block th:each="item : ${categories.paging.getItems()}">
+                    <li class="page-item" th:classappend="${item.index == categories.paging.pageNumber? 'active' : ''}"
+                        th:if="${item.pageItemType.name() == 'PAGE'}">
+                        <a class="page-link" th:href="@{'/categories?pageNumber=' + ${item.index}}"
+                           th:text="${item.index}"></a>
+                    </li>
+                    <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                        <a class="page-link" href="#">...</a>
+                    </li>
+                </th:block>
+                <li class="page-item" th:classappend="${!categories.paging.isNextEnabled()? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{'/categories?pageNumber=' + ${categories.paging.pageNumber + 1}}"><i
+                            class="bi bi-chevron-right"></i></a>
+                </li>
+            </ul>
+        </nav>
+        <form action="/categories" id="categories_page_size" method="get">
+            <select class="form-control" onchange="changePageSize()" required th:id="size"
+                    th:name="size">
+                <option
+                        th:each="opt : ${T(controlling.contractRegister.pagination.PageSize).values()}"
+                        th:selected="${#strings.equals(opt.value, #strings.toString(categories.paging.pageSize))}"
+                        th:text="#{contracts.pagination.page-size-prefix(${opt.value})}"
+                        th:value="${opt.value}">
+                </option>
+            </select>
+        </form>
+    </div>
+
+    <div th:replace="/modal/add-category-modal :: add-category"/>
+    <a>
+        <button class="btn btn-outline-primary" data-target="#add-category-modal" data-toggle="modal">
+            <span class="btn-label"><i class="fas fa-plus"></i></span>
+        </button>
+    </a>
+
+    <a th:href="@{/categories/export/excel}">
+        <button class="btn btn-outline-primary" style="float:right" type="button">
+            <span class="btn-label"><i class="fas fa-file-download"></i></span>
+        </button>
+    </a>
+</div>
+</body>
+</html>

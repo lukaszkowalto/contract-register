@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="projects">
+    <form align="center" id="filter" method="post" th:action="@{/projects}">
+        <div class="form-row justify-content-center mb-3">
+            <div class="form-group col-md-6">
+                <input aria-label="filter" class="form-control" th:name="pattern"
+                       th:placeholder="#{projects.filter.placeholder}" type="search">
+            </div>
+
+            <div class="form-group col-md-1">
+                <button class="btn btn-outline-primary" name="filterProject" type="submit">
+                    <span class="btn-label"><i class="fas fa-filter"></i></span>
+                </button>
+            </div>
+        </div>
+    </form>
+    <div class="table-responsive table-body">
+        <table class="table table-hover">
+            <thead class="bg-secondary text-white">
+            <tr>
+                <th th:text="#{projects.project.header.id}"></th>
+                <th th:text="#{projects.project.header.year}"></th>
+                <th th:text="#{projects.project.header.symbol}"></th>
+                <th th:text="#{projects.project.header.parent}"></th>
+                <th th:text="#{projects.project.header.type}"></th>
+                <th th:text="#{projects.project.header.name}"></th>
+                <th th:text="#{projects.project.header.date-from}"></th>
+                <th th:text="#{projects.project.header.date-to}"></th>
+                <th th:text="#{projects.project.header.description}"></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="project : ${projects.page}">
+                <td th:text="${project.id}"></td>
+                <td th:text="${#numbers.formatDecimal(project.year,4,0)}"></td>
+                <td th:text="${project.symbol}"></td>
+                <td th:text="${project?.parentProject?.getProjectHeader()}"></td>
+                <td th:text="${project.projectType.name}"></td>
+                <td th:text="${project.name}"></td>
+                <td th:text="${project.dateFrom}"></td>
+                <td th:text="${project.dateTo}"></td>
+                <td th:text="${project.description}"></td>
+                <td>
+                    <button class="btn btn-outline-danger" data-toggle="modal"
+                            th:attr="data-target='#modal-delete-project'+${project.id}"
+                            type="button">
+                        <span class="btn-label"><i class="fas fa-trash-alt"></i></span>
+                    </button>
+                    <div th:replace="/modal/delete-project-modal :: delete-project"/>
+                </td>
+                <td>
+                    <button class="btn btn-outline-primary" th:attr="onclick=|prepareModalProject('${project.id}')| "
+                            type="button">
+                        <span class="btn-label"><i class="fas fa-pencil-alt"></i></span>
+                    </button>
+                    <div th:replace="/modal/update-project-modal :: update-project"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <nav aria-label="Page navigation" class="paging">
+            <ul class="pagination" th:if="${projects.page.totalPages > 1}">
+                <li class="page-item" th:classappend="${!projects.paging.isPrevEnabled()? 'disabled' : ''}">
+                    <a class="page-link" tabindex="-1"
+                       th:href="@{'/projects?pageNumber=' + ${projects.paging.pageNumber - 1}}"><i
+                            class="bi bi-chevron-left"></i></a>
+                </li>
+                <th:block th:each="item : ${projects.paging.getItems()}">
+                    <li class="page-item" th:classappend="${item.index == projects.paging.pageNumber? 'active' : ''}"
+                        th:if="${item.pageItemType.name() == 'PAGE'}">
+                        <a class="page-link" th:href="@{'/projects?pageNumber=' + ${item.index}}"
+                           th:text="${item.index}"></a>
+                    </li>
+                    <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                        <a class="page-link" href="#">...</a>
+                    </li>
+                </th:block>
+                <li class="page-item" th:classappend="${!projects.paging.isNextEnabled()? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{'/projects?pageNumber=' + ${projects.paging.pageNumber + 1}}"><i
+                            class="bi bi-chevron-right"></i></a>
+                </li>
+            </ul>
+        </nav>
+        <form action="/projects" id="projects_page_size" method="get">
+            <select class="form-control" onchange="changePageSize()" required th:id="size"
+                    th:name="size">
+                <option
+                        th:each="opt : ${T(controlling.contractRegister.pagination.PageSize).values()}"
+                        th:selected="${#strings.equals(opt.value, #strings.toString(projects.paging.pageSize))}"
+                        th:text="#{contracts.pagination.page-size-prefix(${opt.value})}"
+                        th:value="${opt.value}">
+                </option>
+            </select>
+        </form>
+    </div>
+
+    <div th:replace="/modal/add-project-modal :: add-project"/>
+    <a>
+        <button class="btn btn-outline-primary" data-target="#add-project-modal" data-toggle="modal">
+            <span class="btn-label"><i class="fas fa-plus"></i></span>
+        </button>
+    </a>
+
+    <a th:href="@{/projects/export/excel}">
+        <button class="btn btn-outline-primary" style="float:right" type="button">
+            <span class="btn-label"><i class="fas fa-file-download"></i></span>
+        </button>
+    </a>
+</div>
+</body>
+</html>

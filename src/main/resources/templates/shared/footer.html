@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer class="mt-auto" th:fragment="footer">
+    <div class="col-md-12">
+        <section class="text-center">
+            <a class="btn btn-link btn-floating btn-lg text-dark m-1" data-mdb-ripple-color="dark"
+               href="mailto:lukaszkowalto@o2.pl"
+               role="button"><i class="fab fa-google"></i></a>
+            <a class="btn btn-link btn-floating btn-lg text-dark m-1" data-mdb-ripple-color="dark"
+               href="https://github.com/lukaszkowalto/contract-register"
+               role="button"><i class="fab fa-github"></i></a>
+        </section>
+        <div class="text-center text-dark p-3" th:text="#{footer.copyright.statement}"></div>
+    </div>
+</footer>
+</body>
+</html>

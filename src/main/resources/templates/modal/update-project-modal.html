@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="update-project">
+    <div aria-hidden="true" aria-labelledby="editProjectModalLabel" data-backdrop="static" class="modal fade" role="dialog"
+         tabindex="-1" th:id="modal-edit-project+${project.id}">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" th:id="editProjectModalLabel+${project.id}"
+                        th:text="#{update.project.modal.title}"></h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" th:action="@{/update-project}" th:object="${projectForm}">
+                        <input class="form-control" hidden th:id="id+${project.id}" th:name="id"
+                               th:value="${project.id}" type="text">
+                        <input class="form-control" hidden th:id="parent-id+${project.id}" th:name="parent-id"
+                               th:value="${project.parentProject?.id}" type="text">
+                        <div class="row">
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="project-year+${project.id}"
+                                       th:text="#{add.project.modal.step1.content.project-year}"></label>
+                                <select class="form-control" data-live-search="true" name="year" path="year"
+                                        required
+                                        th:attr="onchange=|getParentProjectList(${project.id})|"
+                                        th:id="project-year+${project.id}">
+                                    <option th:each="year_opt : ${years}" th:selected="${year_opt==project.year}"
+                                            th:text="${year_opt}"
+                                            th:value="${year_opt}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="project-type+${project.id}"
+                                       th:text="#{add.project.modal.step2.content.project-type}"></label>
+                                <select class="form-control" data-live-search="true" name="projectType"
+                                        path="projectType" required
+                                        th:attr="onchange=|getParentProjectList(${project.id})|"
+                                        th:id="project-type+${project.id}">
+                                    <option th:each="type_opt : ${T(controlling.contractRegister.dic.ProjectType).values()}"
+                                            th:selected="${type_opt.name==project.projectType.name}"
+                                            th:text="${type_opt.name}"
+                                            th:value="${type_opt}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 mb-3">
+                                <label th:for="project-parent+${project.id}"
+                                       th:text="#{add.project.modal.step1.content.project-parent}"></label>
+                                <select class="form-control selectpicker" data-live-search="true" name="parentProjectId"
+                                        th:id="project-parent+${project.id}">
+
+                                    <option th:text="#{add.project.select.option.placeholder}" value=""></option>
+                                    <option th:each="parent_opt : ${parents}"
+                                            th:text="${parent_opt.getProjectHeader()}"
+                                            th:value="${parent_opt.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 mb-3">
+                                <label th:for="project-symbol+${project.id}"
+                                       th:text="#{add.project.modal.step1.content.project-symbol}"></label>
+                                <input class="form-control" maxlength="32" minlength="1" readonly required
+                                       th:id="project-symbol+${project.id}" th:name="symbol"
+                                       th:value="${project.symbol}" type="text">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class=" form-group col-md-12 mb-3">
+                                <label th:for="project-name+${project.id}"
+                                       th:text="#{add.project.modal.step2.content.project-name}"></label>
+                                <input class="form-control" maxlength="256" minlength="1" required
+                                       th:id="project-name+${project.id}" th:name="name" th:value="${project.name}"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="project-date-from+${project.id}"
+                                       th:text="#{add.project.modal.step3.content.project-date-from}"></label>
+                                <input class="form-control" name="dateFrom" onchange="limitDateToProject(event)"
+                                       required
+                                       th:id="project-date-from+${project.id}" th:value="${project.dateFrom}"
+                                       type="date">
+                            </div>
+
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="project-date-to+${project.id}"
+                                       th:text="#{add.project.modal.step3.content.project-date-to}"></label>
+                                <input class="form-control" name="dateTo" onchange="limitDateFromProject(event)"
+                                       th:id="project-date-to+${project.id}"
+                                       th:value="${project.dateTo}" type="date">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class=" form-group col-md-12 mb-3">
+                                <label th:for="project-description+${project.id}"
+                                       th:text="#{add.project.modal.step3.content.project-description}"></label>
+                                <textarea class="form-control" maxlength="2048" rows="3"
+                                          th:id="project-description+${project.id}" th:name="description"
+                                          th:text="${project.description}"> </textarea>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-danger" th:text="#{add.project.modal.button.save}"
+                                type="submit"></button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button aria-hidden="true" class="btn btn-secondary" data-dismiss="modal"
+                            th:text="#{add.project.modal.button.cancel}"
+                            type="button"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

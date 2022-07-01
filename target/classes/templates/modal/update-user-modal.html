@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="update-user">
+    <div aria-hidden="true" aria-labelledby="editUserModalLabel" data-backdrop="static" class="modal fade" role="dialog"
+         tabindex="-1" th:id="modal-edit-user+${user.id}">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" th:id="editUserModalLabel+${user.id}"
+                        th:text="#{update.user.modal.title}"></h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" th:action="@{/update-user}" th:object="${userForm}">
+                        <input class="form-control" hidden th:id="id+${user.id}" th:name="id"
+                               th:value="${user.id}" type="text">
+
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label th:for="user-firstName+${user.id}"
+                                       th:text="#{update.user.first-name}"></label>
+                                <input class="form-control" maxlength="32" minlength="1"
+                                       readonly required th:id="user-firstName+${user.id}"
+                                       th:name="user-firstName"
+                                       th:value="${user.firstName}" type="text">
+                            </div>
+                            <div class="form-group col-6">
+                                <label th:for="user-lastName+${user.id}"
+                                       th:text="#{update.user.last-name}"></label>
+                                <input class="form-control" maxlength="32" minlength="1"
+                                       readonly required th:id="user-lastName+${user.id}" th:name="user-lastName"
+                                       th:value="${user.lastName}" type="text">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label th:for="user-email+${user.id}"
+                                       th:text="#{update.user.email}"></label>
+                                <input class="form-control" maxlength="64" minlength="1" readonly
+                                       required
+                                       th:id="user-email+${user.id}" th:name="user-email" th:value="${user.email}"
+                                       type="email">
+                            </div>
+
+                            <div class="form-group col-6">
+                                <label th:for="user-role+${user.id}"
+                                       th:text="#{update.user.role}"></label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                        required th:id="user-role+${user.id}" th:name="role">
+                                    <option selected="selected" style=" display: none;"
+                                            th:text="#{update.user.select.option.placeholder}"
+                                            value=""></option>
+                                    <option th:each="role_opt : ${T(controlling.contractRegister.dic.UserRole).values()}"
+                                            th:selected="${role_opt.name==user.role?.name}"
+                                            th:text="${role_opt.name}"
+                                            th:value="${role_opt}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-danger" th:text="#{update.user.modal.button.save}"
+                                type="submit"></button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button aria-hidden="true" class="btn btn-secondary" data-dismiss="modal"
+                            th:text="#{update.user.modal.button.cancel}"
+                            type="button"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

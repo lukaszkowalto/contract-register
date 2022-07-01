@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<div th:fragment="add-customer-business">
+    <div aria-hidden="true" aria-labelledby="addCustomerBusinessModal" class="modal fade" data-backdrop="static"
+         data-keyboard="false" id="add-customer-business-modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" id="wizard-title-business"
+                        th:text="#{add.customer.business.modal.title}"></h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form align="center" id="add-customer-business" method="post" th:action="@{/customer}"
+                      th:object="${customerForm}">
+                    <input hidden th:name="callingInterface" th:value="${callingInterface}" type="text"/>
+                    <input hidden th:name="customerType" th:value="BUSINESS" type="text"/>
+                    <div class="modal-body">
+                        <div class="navbar">
+                            <div class="navbar-inner">
+                                <ul class="nav nav-tabs " id="tabListCustomerBusiness" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" data-step="1" data-toggle="tab"
+                                           href="#stepCustomer1Business"
+                                           onclick="stepCustomer1Function(event,'Business')" role="tab"
+                                           th:text="#{add.customer.modal.step1.title}"></a>
+                                    <li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" data-step="2" data-toggle="tab"
+                                           href="#stepCustomer2Business"
+                                           onclick="stepCustomer2Function(event,'Business')" role="tab"
+                                           th:text="#{add.customer.modal.step2.title}"></a>
+                                    <li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" data-step="3" data-toggle="tab"
+                                           href="#stepCustomer3Business"
+                                           onclick="stepCustomer3Function(event,'Business')" role="tab"
+                                           th:text="#{add.customer.modal.step3.title}"></a>
+                                    <li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="progress mt-2">
+                            <div aria-valuemax="3" aria-valuemin="1" aria-valuenow="1"
+                                 class="progress-bar progress-bar-success" role="progressbar" style="width: 33%"
+                                 th:text="#{add.customer.modal.progressbar.step1}"></div>
+                        </div>
+
+                        <div class="tab-content mt-2">
+                            <!--=========================================STEP 1===================================-->
+                            <div class="tab-pane fade show active" id="stepCustomer1Business">
+                                <div class="form row">
+                                    <div class="form-group col-md-12 mb-3">
+                                        <label for="customer-name"
+                                               th:text="#{add.customer.modal.step1.content.customer-name}"></label>
+                                        <input class="form-control" id="customer-name" maxlength="64"
+                                               minlength="1" required th:field="*{name}" th:name="customer-name"
+                                               type="text">
+                                    </div>
+                                </div>
+                                <div class="form row">
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="customer-nip"
+                                               th:text="#{add.customer.modal.step1.content.customer-nip}"></label>
+                                        <input class="form-control" id="customer-nip" maxlength="32" minlength="1"
+                                               required th:field="*{nip}" th:name="customer-nip" type="text">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="customer-regon"
+                                               th:text="#{add.customer.modal.step1.content.customer-regon}"></label>
+                                        <input class="form-control" id="customer-regon" maxlength="16"
+                                               th:field="*{regon}" th:name="customer-regon" type="text">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="customer-krs"
+                                               th:text="#{add.customer.modal.step1.content.customer-krs}"></label>
+                                        <input class="form-control" id="customer-krs" maxlength="16" th:field="*{krs}"
+                                               th:name="customer-krs" type="text">
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" disabled id="stepCustomer1Prew"
+                                            th:text="#{add.customer.modal.button.prew}" type="button"></button>
+                                    <button class="btn btn-secondary" id="stepCustomer1Next"
+                                            onclick="stepCustomer1NextFunction('Business')"
+                                            th:text="#{add.customer.modal.button.next}"
+                                            type="button"></button>
+                                </div>
+
+                            </div>
+                            <!--=========================================STEP 2===================================-->
+                            <div class="tab-pane fade" id="stepCustomer2Business">
+                                <div class="form row">
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="customer-country"
+                                               th:text="#{add.customer.modal.step1.content.customer-country}"></label>
+                                        <select class="form-control selectpicker" data-live-search="true"
+                                                id="customer-country" required th:field="*{country}"
+                                                th:name="customerCountry">
+                                            <option selected="selected" style=" display: none;"
+                                                    th:text="#{add.customer.select.option.placeholder}"
+                                                    value=""></option>
+                                            <option th:each="country_opt : ${T(controlling.contractRegister.dic.CustomerAddressCountry).values()}"
+                                                    th:text="${country_opt.name}" th:value="${country_opt}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-8 mb-3">
+                                        <label for="customer-place"
+                                               th:text="#{add.customer.modal.step1.content.customer-place}"></label>
+                                        <input class="form-control" id="customer-place" maxlength="256"
+                                               minlength="1" required th:field="*{place}" th:name="customerPlace"
+                                               type="text">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="customer-zip-code"
+                                               th:text="#{add.customer.modal.step1.content.customer-zip-code}"></label>
+                                        <input class="form-control" id="customer-zip-code" maxlength="16"
+                                               th:field="*{zipCode}"
+                                               th:name="zipCode" type="text">
+                                    </div>
+                                    <div class="form-group col-md-8 mb-3">
+                                        <label for="customer-street"
+                                               th:text="#{add.customer.modal.step1.content.customer-street}"></label>
+                                        <input class="form-control" id="customer-street" maxlength="256"
+                                               th:field="*{street}" th:name="customerStreet" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="customer-house-number"
+                                               th:text="#{add.customer.modal.step1.content.customer-house-number}"></label>
+                                        <input class="form-control" id="customer-house-number" maxlength="16"
+                                               minlength="1" required th:field="*{houseNumber}" th:name="houseNumber"
+                                               type="text">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="customer-flat-number"
+                                               th:text="#{add.customer.modal.step1.content.customer-flat-number}"></label>
+                                        <input class="form-control" id="customer-flat-number" maxlength="16"
+                                               th:field="*{flatNumber}" th:name="flatNumber" type="text">
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" id="stepCustomer2Prew"
+                                            onclick="stepCustomer2PrewFunction('Business')"
+                                            th:text="#{add.customer.modal.button.prew}"
+                                            type="button"></button>
+                                    <button class="btn btn-secondary" id="stepCustomer2Next"
+                                            onclick="stepCustomer2NextFunction('Business')"
+                                            th:text="#{add.customer.modal.button.next}"
+                                            type="button"></button>
+                                </div>
+
+                            </div>
+                            <!--=========================================STEP 3===================================-->
+                            <div class="tab-pane fade" id="stepCustomer3Business">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="customer-email"
+                                               th:text="#{add.customer.modal.step1.content.customer-email}"></label>
+                                        <input class="form-control" id="customer-email" maxlength="64"
+                                               th:field="*{email}"
+                                               th:name="email" type="email">
+                                    </div>
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="customer-cell-phone"
+                                               th:text="#{add.customer.modal.step1.content.customer-cell-phone}"></label>
+                                        <input class="form-control" id="customer-cell-phone" maxlength="16"
+                                               th:field="*{cellPhone}" th:name="cellPhone" type="tel">
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" id="stepCustomer3Prew"
+                                            onclick="stepCustomer3PrewFunction('Business')"
+                                            th:text="#{add.customer.modal.button.prew}"
+                                            type="button"></button>
+                                    <button class="btn btn-secondary" disabled id="stepCustomer3Next"
+                                            th:text="#{add.customer.modal.button.next}" type="button"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button aria-hidden="true" class="btn btn-secondary" data-dismiss="modal"
+                                onclick="resetModalCustomer('Business')"
+                                th:text="#{add.customer.modal.button.cancel}" type="button"></button>
+                        <button class="btn btn-primary" th:text="#{add.customer.modal.button.save}"
+                                type="submit"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

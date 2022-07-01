@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="pl">
+    <title th:text="#{registration.title}"></title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <link rel="stylesheet" th:href="@{/css/menu.css}"/>
+
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" rel="stylesheet"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"
+          rel="stylesheet"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/10a33dc5d1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.js"></script>
+</head>
+
+<body class="bg-linear-gradient">
+<section class="vh-100">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <div class="card" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                            <h2 class="text-center mb-4" th:text="#{registration.title}"></h2>
+
+                            <div th:if="${paramPair.getFirst()==0}">
+                                <div class="alert alert-danger" role="alert">
+                                    <span th:text="${paramPair.getSecond()}"></span>
+                                </div>
+                            </div>
+
+                            <div th:if="${paramPair.getFirst()==1}">
+                                <div class="alert alert-success" role="alert">
+                                    <span th:text="#{registration.verification.email.information} + ${paramPair.getSecond()}"></span>
+                                </div>
+                            </div>
+
+                            <div th:if="${paramPair.getFirst()==2}">
+                                <div class="alert alert-warning" role="alert">
+                                    <span th:text="${paramPair.getSecond()}"></span>
+                                </div>
+                            </div>
+
+                            <div th:if="${paramPair.getFirst()==3}">
+                                <div class="alert alert-success" role="alert">
+                                    <span th:text="${paramPair.getSecond()}"></span>
+                                </div>
+                            </div>
+
+                            <div th:if="${paramPair.getFirst()>0}">
+                                <div class="d-flex justify-content-center">
+                                    <a class="btn btn-outline-secondary btn-block btn-lg" href="/login" role="button"
+                                       th:text="#{login.button.submit}"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

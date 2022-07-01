@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="contracts">
+    <form align="center" id="filter" method="post" th:action="@{/contracts}">
+        <div class="form-row justify-content-center mb-3">
+            <div class="form-group col-md-6">
+                <input aria-label="filter" class="form-control" th:name="pattern"
+                       th:placeholder="#{contracts.filter.placeholder}" type="search">
+            </div>
+
+            <div class="form-group col-md-1">
+                <button class="btn btn-outline-primary" name="filterContract" type="submit">
+                    <span class="btn-label"><i class="fas fa-filter"></i></span>
+                </button>
+            </div>
+        </div>
+    </form>
+    <div class="table-responsive table-body">
+        <table class="table table-hover">
+            <thead class="bg-secondary text-white">
+            <tr>
+                <th th:text="#{contracts.contract.header.id}"></th>
+                <th th:text="#{contracts.contract.header.document-date}"></th>
+                <th th:text="#{contracts.contract.header.number}"></th>
+                <th th:text="#{contracts.contract.header.type}"></th>
+                <th th:text="#{contracts.contract.header.date-from}"></th>
+                <th th:text="#{contracts.contract.header.date-to}"></th>
+                <th th:text="#{contracts.contract.header.customer}"></th>
+                <th th:text="#{contracts.contract.header.details}"></th>
+                <th th:text="#{contracts.contract.header.currency}"></th>
+                <th th:text="#{contracts.contract.header.exchange-rate}"></th>
+                <th th:text="#{contracts.contract.header.amount}"></th>
+                <th th:text="#{contracts.contract.header.amount-VAT}"></th>
+                <th th:text="#{contracts.contract.header.remarks}"></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contract : ${contracts.page}">
+                <td th:text="${contract.id}"></td>
+                <td th:text="${contract.documentDate}"></td>
+                <td th:text="${contract.contractNumber}"></td>
+                <td th:text="${contract.contractType.name}"></td>
+                <td th:text="${contract.contractDateFrom}"></td>
+                <td th:text="${contract.contractDateTo}"></td>
+                <td th:text="${contract?.customer?.getCustomerHeader()}"></td>
+                <td th:text="${contract.contractDetails}"></td>
+                <td th:text="${contract.currency}"></td>
+                <td th:text="${#numbers.formatDecimal(contract.exchangeRate, 1, 'WHITESPACE', 2, 'DEFAULT')}"></td>
+                <td th:text="${#numbers.formatDecimal(contract.amount, 1, 'WHITESPACE', 2, 'DEFAULT')}"></td>
+                <td th:text="${#numbers.formatDecimal(contract.amountVAT, 1, 'WHITESPACE', 2, 'DEFAULT')}"></td>
+                <td th:text="${contract.remarks}"></td>
+                <td>
+                    <button class="btn btn-outline-danger" data-toggle="modal"
+                            th:attr="data-target='#modal-delete-contract'+${contract.id}"
+                            type="button">
+                        <span class="btn-label"><i class="fas fa-trash-alt"></i></span>
+                    </button>
+                    <div th:replace="/modal/delete-contract-modal :: delete-contract"/>
+                </td>
+                <td>
+                    <button class="btn btn-outline-primary" th:attr="onclick=|prepareModalContract('${contract.id}')|"
+                            type="button">
+                        <span class="btn-label"><i class="fas fa-pencil-alt"></i></span>
+                    </button>
+                    <div th:replace="/modal/update-contract-modal :: update-contract"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <nav aria-label="Page navigation" class="paging">
+            <ul class="pagination" th:if="${contracts.page.totalPages > 1}">
+                <li class="page-item" th:classappend="${!contracts.paging.isPrevEnabled()? 'disabled' : ''}">
+                    <a class="page-link" tabindex="-1"
+                       th:href="@{'/contracts?pageNumber=' + ${contracts.paging.pageNumber - 1}}"><i
+                            class="bi bi-chevron-left"></i></a>
+                </li>
+                <th:block th:each="item : ${contracts.paging.getItems()}">
+                    <li class="page-item" th:classappend="${item.index == contracts.paging.pageNumber? 'active' : ''}"
+                        th:if="${item.pageItemType.name() == 'PAGE'}">
+                        <a class="page-link" th:href="@{'/contracts?pageNumber=' + ${item.index}}"
+                           th:text="${item.index}"></a>
+                    </li>
+                    <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                        <a class="page-link" href="#">...</a>
+                    </li>
+                </th:block>
+                <li class="page-item" th:classappend="${!contracts.paging.isNextEnabled()? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{'/contracts?pageNumber=' + ${contracts.paging.pageNumber + 1}}"><i
+                            class="bi bi-chevron-right"></i></a>
+                </li>
+            </ul>
+        </nav>
+        <form action="/contracts" id="contracts_page_size" method="get">
+            <select class="form-control" onchange="changePageSize()" required th:id="size"
+                    th:name="size">
+                <option
+                        th:each="opt : ${T(controlling.contractRegister.pagination.PageSize).values()}"
+                        th:selected="${#strings.equals(opt.value, #strings.toString(contracts.paging.pageSize))}"
+                        th:text="#{contracts.pagination.page-size-prefix(${opt.value})}"
+                        th:value="${opt.value}">
+                </option>
+            </select>
+        </form>
+    </div>
+
+
+    <div th:replace="/modal/add-contract-modal :: add-contract"/>
+    <a>
+        <button class="btn btn-outline-primary" data-target="#add-contract-modal" data-toggle="modal">
+            <span class="btn-label"><i class="fas fa-plus"></i></span>
+        </button>
+    </a>
+
+    <a th:href="@{/contracts/export/excel}">
+        <button class="btn btn-outline-primary" style="float:right" type="button">
+            <span class="btn-label"><i class="fas fa-file-download"></i></span>
+        </button>
+    </a>
+</div>
+</body>
+</html>

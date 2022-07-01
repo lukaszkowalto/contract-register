@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="navbar navbar-expand-lg navbar-light" th:fragment="menu">
+    <a class="navbar-brand" href="/home"><p th:text="#{menu.navbar.homepage}"></p></a>
+    <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler"
+            data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                   href="#"
+                   id="navbarDropdownIns" role="button" th:text="#{menu.navbar.dropdown.insertion}"></a>
+                <ul aria-labelledby="navbarDropdown" class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" data-target="#add-contract-modal" data-toggle="modal"
+                           href="#add-contract-modal"
+                           th:text="#{menu.navbar.dropdown.insertion.item1}"></a>
+                    </li>
+                    <div class="dropdown-divider"></div>
+
+                    <li>
+                        <a class="dropdown-item" data-target="#add-project-modal" data-toggle="modal"
+                           href="#add-project-modal"
+                           th:text="#{menu.navbar.dropdown.insertion.item2}"></a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item"
+                           data-target="#add-category-modal" data-toggle="modal" href="#add-category-modal"
+                           th:text="#{menu.navbar.dropdown.insertion.item3}"></a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" th:text="#{menu.navbar.dropdown.insertion.item4}"> &raquo;</a>
+
+                        <ul class="submenu dropdown-menu">
+                            <li>
+                                <a class="dropdown-item"
+                                   data-target="#add-customer-person-modal" data-toggle="modal"
+                                   href="#add-customer-person-modal"
+                                   th:text="#{menu.navbar.dropdown.insertion.item4.1}"></a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   data-target="#add-customer-business-modal" data-toggle="modal"
+                                   href="#add-customer-business-modal"
+                                   th:text="#{menu.navbar.dropdown.insertion.item4.2}"></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                   href="#"
+                   id="navbarDropdownRep" role="button" th:text="#{menu.navbar.dropdown.selection}"></a>
+                <div aria-labelledby="navbarDropdown" class="dropdown-menu">
+                    <a class="dropdown-item" href="/contracts" th:text="#{menu.navbar.dropdown.selection.item1}"></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/projects" th:text="#{menu.navbar.dropdown.selection.item2}"></a>
+                    <a class="dropdown-item" href="/categories" th:text="#{menu.navbar.dropdown.selection.item3}"></a>
+                    <a class="dropdown-item" href="/customers" th:text="#{menu.navbar.dropdown.selection.item4}"></a>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                   href="#" id="navbarDropdownMenuLink" role="button"
+                   th:text="${#strings.toUpperCase(#locale).substring(0,2)}">
+                </a>
+                <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu" id="locales">
+                    <a class="dropdown-item" th:href="@{__${#httpServletRequest.requestURI}__?(lang=pl)}"
+                       th:text="#{menu.navbar.dropdown.languages.pl}"></a>
+                    <a class="dropdown-item" th:href="@{__${#httpServletRequest.requestURI}__?(lang=en)}"
+                       th:text="#{menu.navbar.dropdown.languages.en}"></a>
+                </div>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="/users" th:text="#{menu.navbar.element.admin}"></a></li>
+            <li class="nav-item"><a class="nav-link" href="/logout" th:text="#{menu.navbar.element.logout}"></a></li>
+        </ul>
+
+    </div>
+</nav>
+</body>
+</html>

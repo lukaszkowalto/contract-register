@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="-118.0" y="191.0">controlling.contractRegister.repository.ProjectRepository</node>
+    <node x="95.5" y="125.5">controlling.contractRegister.repository.CategoryRepository</node>
+    <node x="97.5" y="191.0">controlling.contractRegister.repository.ContractRepository</node>
+    <node x="111.0" y="-15.0">controlling.contractRegister.repository.UserRepository</node>
+    <node x="59.0" y="45.0">controlling.contractRegister.repository.ContractAttachmentRepository</node>
+    <node x="-126.5" y="125.5">controlling.contractRegister.repository.CustomerRepository</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Compact" zoom="1.0" showDependencies="false" x="376.5" y="198.5" />
+  <SelectedNodes>
+    <node>controlling.contractRegister.repository.UserRepository</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+<div th:fragment="delete-contract">
+    <div class="modal modal-warning fade in" data-backdrop="static" th:id="modal-delete-contract+${contract.id}">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ">
+                <div class="modal-header text-white bg-danger">
+                    <h5 class="modal-title" th:text="#{delete.contract.modal.title}"></h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+                <div class="modal-body">
+                    <h5 th:text="#{delete.contract.modal.body}"></h5>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-primary pull-left" data-dismiss="modal"
+                            th:text="#{delete.contract.modal.button.cancel}"></button>
+                    <a class="btn btn-outline-danger" th:href="@{/delete-contract(id=${contract.id})}"
+                       th:text="#{delete.contract.modal.button.delete}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

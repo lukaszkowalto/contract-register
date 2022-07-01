@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<div th:fragment="add-category">
+    <div aria-hidden="true" aria-labelledby="addCategoryModal" class="modal fade" data-backdrop="static"
+         data-keyboard="false"
+         id="add-category-modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" id="wizard-title" th:text="#{add.category.modal.title}"></h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form align="center" id="add-category" method="post" th:action="@{/category}"
+                      th:object="${categoryForm}">
+                    <input hidden th:name="callingInterface" th:value="${callingInterface}" type="text"/>
+                    <div class="modal-body">
+                        <div class="navbar">
+                            <div class="navbar-inner">
+                                <ul class="nav nav-tabs " id="tabListCategory" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" data-step="1" data-toggle="tab" href="#stepCategory1"
+                                           onclick="stepCategory1Function(event)" role="tab"
+                                           th:text="#{add.category.modal.step1.title}"></a>
+                                    <li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" data-step="2" data-toggle="tab" href="#stepCategory2"
+                                           onclick="stepCategory2Function(event)"
+                                           role="tab"
+                                           th:text="#{add.category.modal.step2.title}"></a>
+                                    <li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" data-step="3" data-toggle="tab" href="#stepCategory3"
+                                           onclick="stepCategory3Function(event)"
+                                           role="tab"
+                                           th:text="#{add.category.modal.step3.title}"></a>
+                                    <li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="progress mt-2">
+                            <div aria-valuemax="3" aria-valuemin="1" aria-valuenow="1"
+                                 class="progress-bar progress-bar-success" role="progressbar" style="width: 33%"
+                                 th:text="#{add.category.modal.progressbar.step1}"></div>
+                        </div>
+
+                        <div class="tab-content mt-2">
+                            <!--=========================================STEP 1===================================-->
+                            <div class="tab-pane fade show active" id="stepCategory1">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="category-year"
+                                               th:text="#{add.category.modal.step1.content.category-year}"></label>
+                                        <select class="form-control selectpicker" data-live-search="true"
+                                                id="category-year" onchange="getParentCategoryList()" required
+                                                th:field="*{year}" th:name="categoryYear">
+                                            <option selected="selected" style=" display: none;"
+                                                    th:text="#{add.category.select.option.placeholder}"
+                                                    value=""></option>
+                                            <option th:each="year_opt : ${years}" th:text="${year_opt}"
+                                                    th:value="${year_opt}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="category-type"
+                                               th:text="#{add.category.modal.step2.content.category-type}"></label>
+                                        <select class="form-control selectpicker" data-live-search="true"
+                                                id="category-type" onchange="getParentCategoryList()" required
+                                                th:field="*{categoryType}" th:name="categoryType">
+                                            <option selected="selected" style=" display: none;"
+                                                    th:text="#{add.category.select.option.placeholder}"
+                                                    value=""></option>
+                                            <option th:each="type_opt : ${T(controlling.contractRegister.dic.CategoryType).values()}"
+                                                    th:text="${type_opt.name}" th:value="${type_opt}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-3">
+                                        <label for="category-parent"
+                                               th:text="#{add.category.modal.step1.content.category-parent}"></label>
+                                        <select class="form-control selectpicker" data-live-search="true"
+                                                id="category-parent" th:field="*{parentCategoryId}"
+                                                th:name="categoryParent">
+                                            <option selected="selected"
+                                                    th:text="#{add.category.select.option.placeholder}"
+                                                    value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" disabled id="stepCategory1Prew"
+                                            th:text="#{add.category.modal.button.prew}" type="button"></button>
+                                    <button class="btn btn-secondary" id="stepCategory1Next"
+                                            onclick="stepCategory1NextFunction()"
+                                            th:text="#{add.category.modal.button.next}"
+                                            type="button"></button>
+                                </div>
+
+                            </div>
+                            <!--=========================================STEP 2===================================-->
+                            <div class="tab-pane fade" id="stepCategory2">
+                                <div class="form row">
+                                    <div class="form-group col-md-12 mb-3">
+                                        <label for="category-symbol"
+                                               th:text="#{add.category.modal.step1.content.category-symbol}"></label>
+                                        <input class="form-control" id="category-symbol" maxlength="32"
+                                               minlength="1" required th:field="*{symbol}" th:name="categorySymbol"
+                                               type="text">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class=" form-group col-md-12 mb-3">
+                                        <label for="category-name"
+                                               th:text="#{add.category.modal.step2.content.category-name}"></label>
+                                        <input class="form-control" id="category-name" maxlength="256"
+                                               minlength="1" required th:field="*{name}" th:name="categoryName"
+                                               type="text">
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" id="stepCategory2Prew"
+                                            onclick="stepCategory2PrewFunction()"
+                                            th:text="#{add.category.modal.button.prew}"
+                                            type="button"></button>
+                                    <button class="btn btn-secondary" id="stepCategory2Next"
+                                            onclick="stepCategory2NextFunction()"
+                                            th:text="#{add.category.modal.button.next}"
+                                            type="button"></button>
+                                </div>
+
+                            </div>
+                            <!--=========================================STEP 3===================================-->
+                            <div class="tab-pane fade" id="stepCategory3">
+                                <div class="form-row">
+                                    <div class=" form-group col-md-12 mb-3">
+                                        <label for="category-description"
+                                               th:text="#{add.category.modal.step3.content.category-description}"></label>
+                                        <textarea class="form-control" id="category-description"
+                                                  maxlength="2048" rows="3" th:field="*{description}"
+                                                  th:name="categoryDescription"> </textarea>
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" id="stepCategory3Prew"
+                                            onclick="stepCategory3PrewFunction()"
+                                            th:text="#{add.category.modal.button.prew}"
+                                            type="button"></button>
+                                    <button class="btn btn-secondary" disabled id="stepCategory3Next"
+                                            th:text="#{add.category.modal.button.next}" type="button"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button aria-hidden="true" class="btn btn-secondary" data-dismiss="modal"
+                                onclick="resetModalCategory()"
+                                th:text="#{add.category.modal.button.cancel}" type="button"></button>
+                        <button class="btn btn-primary" th:text="#{add.category.modal.button.save}"
+                                type="submit"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

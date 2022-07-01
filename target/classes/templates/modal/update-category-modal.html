@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="update-category">
+    <div aria-hidden="true" aria-labelledby="editCategoryModalLabel" data-backdrop="static" class="modal fade" role="dialog"
+         tabindex="-1" th:id="modal-edit-category+${category.id}">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" th:id="editCategoryModalLabel+${category.id}"
+                        th:text="#{update.category.modal.title}"></h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" th:action="@{/update-category}" th:object="${categoryForm}">
+                        <input class="form-control" hidden th:id="id+${category.id}" th:name="id"
+                               th:value="${category.id}" type="text">
+                        <input class="form-control" hidden th:id="parent-id+${category.id}" th:name="parent-id"
+                               th:value="${category.parentCategory?.id}" type="text">
+                        <div class="row">
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="category-year+${category.id}"
+                                       th:text="#{add.category.modal.step1.content.category-year}"></label>
+                                <select class="form-control" data-live-search="true" name="year" path="year"
+                                        required
+                                        th:attr="onchange=|getParentCategoryList('${category.id}')|"
+                                        th:id="category-year+${category.id}">
+                                    <option th:each="year_opt : ${years}" th:selected="${year_opt==category.year}"
+                                            th:text="${year_opt}"
+                                            th:value="${year_opt}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="category-type+${category.id}"
+                                       th:text="#{add.category.modal.step2.content.category-type}"></label>
+                                <select class="form-control" data-live-search="true" name="categoryType"
+                                        path="categoryType" required
+                                        th:attr="onchange=|getParentCategoryList('${category.id}')|"
+                                        th:id="category-type+${category.id}">
+                                    <option th:each="type_opt : ${T(controlling.contractRegister.dic.CategoryType).values()}"
+                                            th:selected="${type_opt.name==category.categoryType.name}"
+                                            th:text="${type_opt.name}"
+                                            th:value="${type_opt}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 mb-3">
+                                <label th:for="category-parent+${category.id}"
+                                       th:text="#{add.category.modal.step1.content.category-parent}"></label>
+                                <select class="form-control" data-live-search="true" name="parentCategoryId"
+                                        path="parentCategoryId" th:id="category-parent+${category.id}">
+                                    <option th:text="#{add.category.select.option.placeholder}" value=""></option>
+                                    <option th:each="parent_opt : ${parents}"
+                                            th:text="${parent_opt.getCategoryHeader()}"
+                                            th:value="${parent_opt.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 mb-3">
+                                <label th:for="category-symbol+${category.id}"
+                                       th:text="#{add.category.modal.step1.content.category-symbol}"></label>
+                                <input class="form-control" maxlength="32" minlength="1" readonly required
+                                       th:id="category-symbol+${category.id}" th:name="symbol"
+                                       th:value="${category.symbol}" type="text">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class=" form-group col-md-12 mb-3">
+                                <label th:for="category-name+${category.id}"
+                                       th:text="#{add.category.modal.step2.content.category-name}"></label>
+                                <input class="form-control" maxlength="256" minlength="1" required
+                                       th:id="category-name+${category.id}" th:name="name" th:value="${category.name}"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class=" form-group col-md-12 mb-3">
+                                <label th:for="category-description+${category.id}"
+                                       th:text="#{add.category.modal.step3.content.category-description}"></label>
+                                <textarea class="form-control" maxlength="2048" rows="3"
+                                          th:id="category-description+${category.id}" th:name="description"
+                                          th:text="${category.description}"> </textarea>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-danger" th:text="#{add.category.modal.button.save}"
+                                type="submit"></button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button aria-hidden="true" class="btn btn-secondary" data-dismiss="modal"
+                            th:text="#{add.category.modal.button.cancel}"
+                            type="button"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

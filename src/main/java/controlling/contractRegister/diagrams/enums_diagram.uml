@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="1636.0" y="-15.0">controlling.contractRegister.dic.CustomerType</node>
+    <node x="206.0" y="-15.0">controlling.contractRegister.dic.Currency</node>
+    <node x="1119.0" y="-15.0">controlling.contractRegister.dic.ContractType</node>
+    <node x="-109.0" y="-15.0">controlling.contractRegister.dic.CustomerAddressCountry</node>
+    <node x="1891.0" y="-15.0">controlling.contractRegister.dic.UserRole</node>
+    <node x="781.0" y="-15.0">controlling.contractRegister.dic.ProjectType</node>
+    <node x="432.0" y="-15.0">controlling.contractRegister.dic.CategoryType</node>
+    <node x="1368.0" y="-15.0">controlling.contractRegister.dic.CustomerGender</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Circular" zoom="0.16112437993753445" showDependencies="false" x="990.5" y="2706.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

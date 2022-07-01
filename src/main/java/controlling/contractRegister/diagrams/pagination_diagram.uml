@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="70.0" y="39.5">controlling.contractRegister.pagination.Paged</node>
+    <node x="-73.0" y="39.5">controlling.contractRegister.pagination.PageSize</node>
+    <node x="74.5" y="-15.0">controlling.contractRegister.pagination.PageItem</node>
+    <node x="58.5" y="106.0">controlling.contractRegister.pagination.PageItemType</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Compact" zoom="1.0" showDependencies="false" x="376.5" y="198.5" />
+  <SelectedNodes>
+    <node>controlling.contractRegister.pagination.PageSize</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

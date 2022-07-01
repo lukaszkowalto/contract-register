@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="1928.5" y="51.5">controlling.contractRegister.service.MailSenderService</node>
+    <node x="913.5" y="51.5">controlling.contractRegister.service.CategoryServiceImplementation</node>
+    <node x="966.5" y="-14.5">controlling.contractRegister.service.CategoryService</node>
+    <node x="1162.5" y="-14.5">controlling.contractRegister.service.ContractAttachmentService</node>
+    <node x="1205.5" y="51.5">controlling.contractRegister.service.ContractAttachmentServiceImplementation</node>
+    <node x="2004.5" y="-14.5">controlling.contractRegister.service.UserService</node>
+    <node x="116.0" y="-14.5">controlling.contractRegister.service.ProjectService</node>
+    <node x="2160.5" y="51.5">controlling.contractRegister.service.UserServiceImplementation</node>
+    <node x="550.0" y="-14.5">controlling.contractRegister.service.ExcelExporterService</node>
+    <node x="1430.5" y="-14.5">controlling.contractRegister.service.CustomerService</node>
+    <node x="1630.5" y="51.5">controlling.contractRegister.service.CustomerServiceImplementation</node>
+    <node x="2307.0" y="-14.5">controlling.contractRegister.service.VerificationTokenService</node>
+    <node x="-168.0" y="51.5">controlling.contractRegister.service.ProjectServiceImplementation</node>
+    <node x="149.0" y="51.5">controlling.contractRegister.service.ExcelExporterServiceImplementation</node>
+    <node x="482.0" y="51.5">controlling.contractRegister.service.ContractServiceImplementation</node>
+    <node x="1793.5" y="-14.5">controlling.contractRegister.service.FileStorageService</node>
+    <node x="777.0" y="-14.5">controlling.contractRegister.service.ContractService</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="controlling.contractRegister.service.ContractServiceImplementation" target="controlling.contractRegister.service.ContractService" relationship="REALIZATION">
+      <point x="129.5" y="-0.0" />
+      <point x="853.5" y="66.0" />
+      <point x="-0.0" y="14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.service.ExcelExporterServiceImplementation" target="controlling.contractRegister.service.ExcelExporterService" relationship="REALIZATION">
+      <point x="-0.0" y="-14.5" />
+      <point x="295.5" y="0.0" />
+      <point x="-93.5" y="-0.0" />
+    </edge>
+    <edge source="controlling.contractRegister.service.UserServiceImplementation" target="controlling.contractRegister.service.UserService" relationship="REALIZATION">
+      <point x="-0.0" y="-14.5" />
+      <point x="2276.5" y="0.0" />
+      <point x="63.0" y="-0.0" />
+    </edge>
+    <edge source="controlling.contractRegister.service.CustomerServiceImplementation" target="controlling.contractRegister.service.CustomerService" relationship="REALIZATION">
+      <point x="-0.0" y="-14.5" />
+      <point x="1763.5" y="0.0" />
+      <point x="80.0" y="-0.0" />
+    </edge>
+    <edge source="controlling.contractRegister.service.ProjectServiceImplementation" target="controlling.contractRegister.service.ProjectService" relationship="REALIZATION">
+      <point x="-0.0" y="-14.5" />
+      <point x="-43.5" y="0.0" />
+      <point x="-71.5" y="-0.0" />
+    </edge>
+    <edge source="controlling.contractRegister.service.CategoryServiceImplementation" target="controlling.contractRegister.service.CategoryService" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controlling.contractRegister.service.ContractAttachmentServiceImplementation" target="controlling.contractRegister.service.ContractAttachmentService" relationship="REALIZATION">
+      <point x="-96.0" y="-14.5" />
+      <point x="-0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="1.0" showDependencies="false" x="2067.5" y="0.0" />
+  <SelectedNodes>
+    <node>controlling.contractRegister.service.VerificationTokenService</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

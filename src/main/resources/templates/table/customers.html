@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="customers">
+    <form align="center" id="filter" method="post" th:action="@{/customers}">
+        <div class="form-row justify-content-center mb-3">
+            <div class="form-group col-md-6">
+                <input aria-label="filter" class="form-control" th:name="pattern"
+                       th:placeholder="#{customers.filter.placeholder}" type="search">
+            </div>
+
+            <div class="form-group col-md-1">
+                <button class="btn btn-outline-primary" name="filterCustomer" type="submit">
+                    <span class="btn-label"><i class="fas fa-filter"></i></span>
+                </button>
+            </div>
+        </div>
+    </form>
+    <div class="table-responsive table-body">
+        <table class="table table-hover">
+            <thead class="bg-secondary text-white">
+            <tr>
+                <th th:text="#{customers.customer.header.id}"></th>
+                <th th:text="#{customers.customer.header.type}"></th>
+                <th th:text="#{customers.customer.header.first-name}"></th>
+                <th th:text="#{customers.customer.header.last-name}"></th>
+                <th th:text="#{customers.customer.header.pesel}"></th>
+                <th th:text="#{customers.customer.header.gender}"></th>
+                <th th:text="#{customers.customer.header.employee-flag}"></th>
+                <th th:text="#{customers.customer.header.name}"></th>
+                <th th:text="#{customers.customer.header.nip}"></th>
+                <th th:text="#{customers.customer.header.country}"></th>
+                <th th:text="#{customers.customer.header.place}"></th>
+                <th th:text="#{customers.customer.header.street}"></th>
+                <th th:text="#{customers.customer.header.house-number}"></th>
+                <th th:text="#{customers.customer.header.flat-number}"></th>
+                <th th:text="#{customers.customer.header.zip-code}"></th>
+                <th th:text="#{customers.customer.header.email}"></th>
+                <th th:text="#{customers.customer.header.cell-phone}"></th>
+                <th th:text="#{customers.customer.header.regon}"></th>
+                <th th:text="#{customers.customer.header.krs}"></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="customer : ${customers.page}">
+                <td th:text="${customer.id}"></td>
+                <td th:text="${customer.customerType.code}"></td>
+                <td th:text="${customer.firstName}"></td>
+                <td th:text="${customer.lastName}"></td>
+                <td th:text="${customer.pesel}"></td>
+                <td th:text="${customer?.customerGender?.code}"></td>
+                <td th:text="${customer.employeeFlg}"></td>
+                <td th:text="${customer.name}"></td>
+                <td th:text="${customer.nip}"></td>
+                <td th:text="${customer.customerAddress.country.name}"></td>
+                <td th:text="${customer.customerAddress.place}"></td>
+                <td th:text="${customer.customerAddress.street}"></td>
+                <td th:text="${customer.customerAddress.houseNumber}"></td>
+                <td th:text="${customer.customerAddress.flatNumber}"></td>
+                <td th:text="${customer.customerAddress.zipCode}"></td>
+                <td th:text="${customer?.customerDetails?.email}"></td>
+                <td th:text="${customer?.customerDetails?.cellPhone}"></td>
+                <td th:text="${customer?.customerDetails?.regon}"></td>
+                <td th:text="${customer?.customerDetails?.krs}"></td>
+                <td>
+                    <button class="btn btn-outline-danger" data-toggle="modal"
+                            th:attr="data-target='#modal-delete-customer'+${customer.id}"
+                            type="button">
+                        <span class="btn-label"><i class="fas fa-trash-alt"></i></span>
+                    </button>
+                    <div th:replace="/modal/delete-customer-modal :: delete-customer"/>
+                </td>
+                <td>
+                    <button class="btn btn-outline-primary" th:attr="onclick=|prepareModalCustomer('${customer.id}')| "
+                            type="button">
+                        <span class="btn-label"><i class="fas fa-pencil-alt"></i></span>
+                    </button>
+                    <div th:replace="/modal/update-customer-modal :: update-customer"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <nav aria-label="Page navigation" class="paging">
+            <ul class="pagination" th:if="${customers.page.totalPages > 1}">
+                <li class="page-item" th:classappend="${!customers.paging.isPrevEnabled()? 'disabled' : ''}">
+                    <a class="page-link" tabindex="-1"
+                       th:href="@{'/customers?pageNumber=' + ${customers.paging.pageNumber - 1}}"><i
+                            class="bi bi-chevron-left"></i></a>
+                </li>
+                <th:block th:each="item : ${customers.paging.getItems()}">
+                    <li class="page-item" th:classappend="${item.index == customers.paging.pageNumber? 'active' : ''}"
+                        th:if="${item.pageItemType.name() == 'PAGE'}">
+                        <a class="page-link" th:href="@{'/customers?pageNumber=' + ${item.index}}"
+                           th:text="${item.index}"></a>
+                    </li>
+                    <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                        <a class="page-link" href="#">...</a>
+                    </li>
+                </th:block>
+                <li class="page-item" th:classappend="${!customers.paging.isNextEnabled()? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{'/customers?pageNumber=' + ${customers.paging.pageNumber + 1}}"><i
+                            class="bi bi-chevron-right"></i></a>
+                </li>
+            </ul>
+        </nav>
+        <form action="/customers" id="customers_page_size" method="get">
+            <select class="form-control" onchange="changePageSize()" required th:id="size"
+                    th:name="size">
+                <option
+                        th:each="opt : ${T(controlling.contractRegister.pagination.PageSize).values()}"
+                        th:selected="${#strings.equals(opt.value, #strings.toString(customers.paging.pageSize))}"
+                        th:text="#{contracts.pagination.page-size-prefix(${opt.value})}"
+                        th:value="${opt.value}">
+                </option>
+            </select>
+        </form>
+    </div>
+
+    <div th:replace="/modal/add-customer-person-modal :: add-customer-person"/>
+    <div th:replace="/modal/add-customer-business-modal :: add-customer-business"/>
+
+    <div class="btn-group">
+        <button class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" type="button">
+            <span class="btn-label"><i class="fas fa-plus"></i></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a data-target="#add-customer-person-modal" data-toggle="modal"
+                   th:text="#{customers.add.button.person}"></a></li>
+            <li><a data-target="#add-customer-business-modal" data-toggle="modal"
+                   th:text="#{customers.add.button.business}"></a></li>
+        </ul>
+    </div>
+
+    <a th:href="@{/customers/export/excel}">
+        <button class="btn btn-outline-primary" style="float:right" type="button">
+            <span class="btn-label"><i class="fas fa-file-download"></i></span>
+        </button>
+    </a>
+</div>
+</body>
+</html>

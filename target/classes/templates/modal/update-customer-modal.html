@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="update-customer">
+    <div aria-hidden="true" aria-labelledby="editCustomerModalLabel" data-backdrop="static" class="modal fade" role="dialog"
+         tabindex="-1" th:id="modal-edit-customer+${customer.id}">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" th:id="editCustomerModalLabel+${customer.id}"
+                        th:text="#{update.customer.modal.title}"></h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" th:action="@{/update-customer}" th:object="${customerForm}">
+                        <input class="form-control" hidden th:id="id+${customer.id}" th:name="id"
+                               th:value="${customer.id}" type="text">
+                        <div class="row">
+                            <div class="form-group col-md-12  mb-3">
+                                <label th:for="customer-type+${customer.id}"
+                                       th:text="#{update.customer.content.customer-type}"></label>
+                                <select class="form-control" data-live-search="true" readonly required
+                                        th:attr="onchange=|prepareFormCustomer('${customer.id}')|"
+                                        th:id="customer-type+${customer.id}"
+                                        th:name="customerType" th:value="*{customerType}">
+                                    <option th:each="type_opt : ${T(controlling.contractRegister.dic.CustomerType).values()}"
+                                            th:selected="${type_opt.code==customer.customerType.code}"
+                                            th:text="${type_opt.code}"
+                                            th:value="${type_opt}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div th:id="person-part+${customer.id}">
+                            <div class="row">
+                                <div class="form-group col-md-6 mb-3">
+                                    <label th:for="customer-firstName+${customer.id}"
+                                           th:text="#{add.customer.modal.step1.content.customer-first-name}"></label>
+                                    <input class="form-control" maxlength="32" minlength="1"
+                                           required th:id="customer-firstName+${customer.id}" th:name="firstName"
+                                           th:value="${customer.firstName}"
+                                           type="text">
+                                </div>
+
+                                <div class="form-group col-md-6 mb-3">
+                                    <label th:for="customer-lastName+${customer.id}"
+                                           th:text="#{add.customer.modal.step1.content.customer-last-name}"></label>
+                                    <input class="form-control" maxlength="32" minlength="1"
+                                           required th:id="customer-lastName+${customer.id}" th:name="lastName"
+                                           th:value="${customer.lastName}"
+                                           type="text">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-3 mb-3">
+                                    <label th:for="customer-gender+${customer.id}"
+                                           th:text="#{add.customer.modal.step1.content.customer-gender}"></label>
+                                    <select class="form-control" data-live-search="true" required
+                                            th:id="customer-gender+${customer.id}" th:name="customerGender"
+                                            th:value="*{customerGender}">
+                                        <option selected="selected" style=" display: none;"
+                                                th:text="#{add.customer.select.option.placeholder}"
+                                                value=""></option>
+                                        <option th:each="gender_opt : ${T(controlling.contractRegister.dic.CustomerGender).values()}"
+                                                th:selected="${gender_opt.code==customer?.customerGender?.code}"
+                                                th:text="${gender_opt.code}"
+                                                th:value="${gender_opt}"></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6 mb-3">
+                                    <label th:for="customer-pesel+${customer.id}"
+                                           th:text="#{add.customer.modal.step1.content.customer-pesel}"></label>
+                                    <input class="form-control" maxlength="16" minlength="1" readonly required
+                                           th:id="customer-pesel+${customer.id}"
+                                           th:name="pesel"
+                                           th:value="${customer.pesel}" type="text">
+                                </div>
+                                <div class="form-group col-md-3 mb-3">
+                                    <label th:for="customer-employee-flag+${customer.id}"
+                                           th:text="#{add.customer.modal.step1.content.customer-employee-flag}"></label>
+                                    <br>
+                                    <input th:checked="${customer.employeeFlg}"
+                                           th:id="customer-employee-flag+${customer.id}" th:name="employeeFlg"
+                                           type="checkbox">
+                                </div>
+                            </div>
+                        </div>
+                        <div th:id="business-part+${customer.id}">
+                            <div class="row">
+                                <div class="form-group col-md-12 mb-3">
+                                    <label th:for="customer-name+${customer.id}"
+                                           th:text="#{add.customer.modal.step1.content.customer-name}"></label>
+                                    <input class="form-control" maxlength="64" minlength="1" required
+                                           th:id="customer-name+${customer.id}" th:name="name"
+                                           th:value="${customer.name}" type="text">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 mb-3">
+                                    <label th:for="customer-nip+${customer.id}"
+                                           th:text="#{add.customer.modal.step1.content.customer-nip}"></label>
+                                    <input class="form-control" maxlength="32" minlength="1" readonly required
+                                           th:id="customer-nip+${customer.id}" th:name="nip" th:value="${customer.nip}"
+                                           type="text">
+                                </div>
+                                <div class="form-group col-md-4 mb-3">
+                                    <label th:for="customer-regon+${customer.id}"
+                                           th:text="#{add.customer.modal.step1.content.customer-regon}"></label>
+                                    <input class="form-control" maxlength="16"
+                                           th:id="customer-regon+${customer.id}" th:name="regon"
+                                           th:value="${customer?.customerDetails?.regon}"
+                                           type="text">
+                                </div>
+                                <div class="form-group col-md-4 mb-3">
+                                    <label th:for="customer-krs+${customer.id}"
+                                           th:text="#{add.customer.modal.step1.content.customer-krs}"></label>
+                                    <input class="form-control" maxlength="16"
+                                           th:id="customer-krs+${customer.id}" th:name="krs"
+                                           th:value="${customer?.customerDetails?.krs}"
+                                           type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4 mb-3">
+                                <label th:for="customer-country+${customer.id}"
+                                       th:text="#{add.customer.modal.step1.content.customer-country}"></label>
+                                <select class="form-control" data-live-search="true" required
+                                        th:id="customer-country+${customer.id}" th:name="country">
+                                    <option th:each="country_opt : ${T(controlling.contractRegister.dic.CustomerAddressCountry).values()}"
+                                            th:selected="${country_opt.name ==customer.customerAddress.country.name}"
+                                            th:text="${country_opt.name}"
+                                            th:value="${country_opt}"></option>
+                                </select>
+
+                            </div>
+                            <div class="form-group col-md-8 mb-3">
+                                <label th:for="customer-place+${customer.id}"
+                                       th:text="#{add.customer.modal.step1.content.customer-place}"></label>
+                                <input class="form-control" maxlength="256"
+                                       minlength="1" required th:id="customer-place+${customer.id}" th:name="place"
+                                       th:value="${customer.customerAddress?.place}" type="text">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4 mb-3">
+                                <label th:for="customer-zip-code+${customer.id}"
+                                       th:text="#{add.customer.modal.step1.content.customer-zip-code}"></label>
+                                <input class="form-control" maxlength="16"
+                                       th:id="customer-zip-code+${customer.id}" th:name="zipCode"
+                                       th:value="${customer.customerAddress?.zipCode}"
+                                       type="text">
+                            </div>
+                            <div class="form-group col-md-8 mb-3">
+                                <label th:for="customer-street+${customer.id}"
+                                       th:text="#{add.customer.modal.step1.content.customer-street}"></label>
+                                <input class="form-control" maxlength="256"
+                                       th:id="customer-street+${customer.id}" th:name="street"
+                                       th:value="${customer.customerAddress?.street}"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4 mb-3">
+                                <label th:for="customer-house-number+${customer.id}"
+                                       th:text="#{add.customer.modal.step1.content.customer-house-number}"></label>
+                                <input class="form-control" maxlength="16"
+                                       minlength="1" required th:id="customer-house-number+${customer.id}"
+                                       th:name="houseNumber" th:value="${customer.customerAddress.houseNumber}"
+                                       type="text">
+                            </div>
+                            <div class="form-group col-md-4 mb-3">
+                                <label th:for="customer-flat-number+${customer.id}"
+                                       th:text="#{add.customer.modal.step1.content.customer-flat-number}"></label>
+                                <input class="form-control" maxlength="16"
+                                       th:id="customer-flat-number+${customer.id}" th:name="flatNumber"
+                                       th:value="${customer.customerAddress?.flatNumber}"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="customer-email+${customer.id}"
+                                       th:text="#{add.customer.modal.step1.content.customer-email}"></label>
+                                <input class="form-control" maxlength="64" th:id="customer-email+${customer.id}"
+                                       th:name="email" th:value="${customer?.customerDetails?.email}" type="email">
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="customer-cell-phone+${customer.id}"
+                                       th:text="#{add.customer.modal.step1.content.customer-cell-phone}"></label>
+                                <input class="form-control" maxlength="16" th:id="customer-cell-phone+${customer.id}"
+                                       th:name="cellPhone" th:value="${customer?.customerDetails?.cellPhone}"
+                                       type="tel">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-danger" th:text="#{add.customer.modal.button.save}"
+                                type="submit"></button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button aria-hidden="true" class="btn btn-secondary" data-dismiss="modal"
+                            th:text="#{add.customer.modal.button.cancel}"
+                            type="button"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

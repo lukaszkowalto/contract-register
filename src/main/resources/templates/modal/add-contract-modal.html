@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<div th:fragment="add-contract">
+    <div aria-hidden="true"  aria-labelledby="addCategoryModal" data-backdrop="static" class="modal hide fade" data-keyboard="false"
+         id="add-contract-modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable"  style="width:90%">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" id="wizard-title" th:text="#{add.contract.modal.title}"></h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form align="center" enctype="multipart/form-data" id="add-contract" method="post"
+                      onsubmit="return checkFDM();" th:action="@{/contract}" th:object="${contractForm}">
+                    <input hidden th:name="callingInterface" th:value="${callingInterface}" type="text"/>
+                    <div class="modal-body">
+                        <div class="navbar">
+                            <div class="navbar-inner">
+                                <ul class="nav nav-tabs " id="tabListContract" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" data-step="1" data-toggle="tab" href="#stepContract1"
+                                           onclick="stepContract1Function(event)" role="tab"
+                                           th:text="#{add.contract.modal.step1.title}"></a>
+                                    <li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" data-step="2" data-toggle="tab" href="#stepContract2"
+                                           onclick="stepContract2Function(event)"
+                                           role="tab"
+                                           th:text="#{add.contract.modal.step2.title}"></a>
+                                    <li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" data-step="3" data-toggle="tab" href="#stepContract3"
+                                           onclick="stepContract3Function(event)"
+                                           role="tab"
+                                           th:text="#{add.contract.modal.step3.title}"></a>
+                                    <li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" data-step="3" data-toggle="tab" href="#stepContract4"
+                                           onclick="stepContract4Function(event)"
+                                           role="tab"
+                                           th:text="#{add.contract.modal.step4.title}"></a>
+                                    <li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" data-step="3" data-toggle="tab" href="#stepContract5"
+                                           onclick="stepContract5Function(event)"
+                                           role="tab"
+                                           th:text="#{add.contract.modal.step5.title}"></a>
+                                    <li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="progress mt-2">
+                            <div aria-valuemax="5" aria-valuemin="1" aria-valuenow="1"
+                                 class="progress-bar progress-bar-success" role="progressbar" style="width: 20%"
+                                 th:text="#{add.contract.modal.progressbar.step1}"></div>
+                        </div>
+
+                        <div class="tab-content mt-2">
+                            <!--=========================================STEP 1===================================-->
+                            <div class="tab-pane fade show active" id="stepContract1">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="contract-type"
+                                               th:text="#{add.contract.modal.step1.content.contract-type}"></label>
+                                        <select class="form-control selectpicker" data-live-search="true"
+                                                id="contract-type" required th:field="*{contractType}"
+                                                th:name="contractType">
+                                            <option selected="selected" style=" display: none;"
+                                                    th:text="#{add.contract.select.option.placeholder}"
+                                                    value=""></option>
+                                            <option th:each="type_opt : ${T(controlling.contractRegister.dic.ContractType).values()}"
+                                                    th:text="${type_opt.name}" th:value="${type_opt}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="document-date"
+                                               th:text="#{add.contract.modal.step1.content.document-date}"></label>
+                                        <input class="form-control" id="document-date" required
+                                               th:field="*{documentDate}" th:name="documentDate" type="date">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-3">
+                                        <label for="contract-number"
+                                               th:text="#{add.contract.modal.step1.content.contract-number}"></label>
+                                        <input class="form-control" id="contract-number"
+                                               maxlength="32" minlength="1"
+                                               pattern="[0-9]{5}/20[0-9]{2}" required th:field="*{contractNumber}"
+                                               th:name="contractNumber"
+                                               th:title="#{add.contract.modal.step1.content.contract-number-title}"
+                                               type="text">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-3">
+                                        <label for="contract-customer"
+                                               th:text="#{add.contract.modal.step1.content.contract-customer}"></label>
+                                        <select class="form-control selectpicker" data-live-search="true"
+                                                id="contract-customer" required
+                                                th:field="*{customerId}" th:name="customerId">
+                                            <option selected="selected" style=" display: none;"
+                                                    th:text="#{add.contract.select.option.placeholder}"
+                                                    value=""></option>
+                                            <option th:each="customer_opt : ${customers}"
+                                                    th:text="${customer_opt.getCustomerHeader()}"
+                                                    th:value="${customer_opt.id}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" disabled id="stepContract1Prew"
+                                            th:text="#{add.contract.modal.button.prew}" type="button"></button>
+                                    <button class="btn btn-secondary" id="stepContract1Next"
+                                            onclick="stepContract1NextFunction()"
+                                            th:text="#{add.contract.modal.button.next}"
+                                            type="button"></button>
+                                </div>
+
+                            </div>
+                            <!--=========================================STEP 2===================================-->
+                            <div class="tab-pane fade" id="stepContract2">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="contract-date-from"
+                                               th:text="#{add.contract.modal.step2.content.contract-date-from}"></label>
+                                        <input class="form-control" id="contract-date-from"
+                                               onchange="limitDateToContract(event)" required
+                                               th:field="*{contractDateFrom}"
+                                               th:name="contractDateFrom" type="date">
+                                    </div>
+
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="contract-date-to"
+                                               th:text="#{add.contract.modal.step2.content.contract-date-to}"></label>
+                                        <input class="form-control" id="contract-date-to"
+                                               onchange="limitDateFromContract(event)" th:field="*{contractDateTo}"
+                                               th:name="contractDateTo"
+                                               type="date">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class=" form-group col-md-12 mb-3">
+                                        <label for="contract-details"
+                                               th:text="#{add.contract.modal.step2.content.contract-details}"></label>
+                                        <textarea class="form-control" id="contract-details"
+                                                  maxlength="4000" required rows="5" th:field="*{contractDetails}"
+                                                  th:name="contractDetails"> </textarea>
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" id="stepContract2Prew"
+                                            onclick="stepContract2PrewFunction()"
+                                            th:text="#{add.contract.modal.button.prew}"
+                                            type="button"></button>
+                                    <button class="btn btn-secondary" id="stepContract2Next"
+                                            onclick="stepContract2NextFunction()"
+                                            th:text="#{add.contract.modal.button.next}"
+                                            type="button"></button>
+                                </div>
+                            </div>
+                            <!--=========================================STEP 3===================================-->
+                            <div class="tab-pane fade" id="stepContract3">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="contract-currency"
+                                               th:text="#{add.contract.modal.step3.content.currency}"></label>
+                                        <select class="form-control selectpicker" data-live-search="true"
+                                                id="contract-currency" onchange="currencyChanged()" required
+                                                th:field="*{currency}" th:name="currency">
+                                            <option selected="selected" style=" display: none;"
+                                                    th:text="#{add.contract.select.option.placeholder}"
+                                                    value=""></option>
+                                            <option th:each="curr_opt : ${T(controlling.contractRegister.dic.Currency).values()}"
+                                                    th:text="${curr_opt.name}" th:value="${curr_opt}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="contract-exchange-rate"
+                                               th:text="#{add.contract.modal.step3.content.contract-exchange-rate}"></label>
+                                        <input class="form-control" id="contract-exchange-rate" max="100"
+                                               min="0" required step="0.01" th:field="*{exchangeRate}"
+                                               th:name="exchangeRate" type="number">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="contract-amount"
+                                               th:text="#{add.contract.modal.step3.content.contract-amount}"></label>
+                                        <input class="form-control" id="contract-amount" max="999999999" min="0"
+                                               required
+                                               step="0.01" th:field="*{amount}" th:name="amount" type="number">
+                                    </div>
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="contract-amountVAT"
+                                               th:text="#{add.contract.modal.step3.content.contract-amountVAT}"></label>
+                                        <input class="form-control" id="contract-amountVAT" max="999999999" min="0"
+                                               required step="0.01" th:field="*{amountVAT}" th:name="amountVAT"
+                                               type="number">
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" id="stepContract3Prew"
+                                            onclick="stepContract3PrewFunction()"
+                                            th:text="#{add.contract.modal.button.prew}"
+                                            type="button"></button>
+                                    <button class="btn btn-secondary" id="stepContract3Next"
+                                            onclick="stepContract3NextFunction()"
+                                            th:text="#{add.contract.modal.button.next}"
+                                            type="button"></button>
+                                </div>
+                            </div>
+                            <!--=========================================STEP 4===================================-->
+                            <div class="tab-pane fade" id="stepContract4">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-3">
+                                        <label for="contract-remarks"
+                                               th:text="#{add.contract.modal.step4.content.contract-remarks}"></label>
+                                        <textarea class="form-control" id="contract-remarks" maxlength="4000" rows="5"
+                                                  th:field="*{remarks}" th:name="remarks"> </textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-3">
+                                        <button class="btn btn-secondary"
+                                                id="addFile"
+                                                th:attr="onclick=|prepareModalAddFile('')|"
+                                                th:text="#{add.contract.modal.button.add.file}"
+                                                type="button"></button>
+                                    </div>
+
+                                    <table class="table table-sm table-bordered" id="files">
+                                        <tr>
+                                            <th th:text="#{add.contract.modal.step4.content.files-table.header.file}"></th>
+                                            <th th:text="#{add.contract.modal.step4.content.files-table.header.description}"></th>
+                                            <th></th>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" id="stepContract4Prew"
+                                            onclick="stepContract4PrewFunction()"
+                                            th:text="#{add.contract.modal.button.prew}"
+                                            type="button"></button>
+                                    <button class="btn btn-secondary" id="stepContract4Next"
+                                            onclick="stepContract4NextFunction()"
+                                            th:text="#{add.contract.modal.button.next}"
+                                            type="button"></button>
+                                </div>
+                            </div>
+                            <!--=========================================STEP 5===================================-->
+                            <div class="tab-pane fade" id="stepContract5">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-3">
+                                        <button class="btn btn-secondary"
+                                                id="addFDM"
+                                                th:attr="onclick=|prepareModalAddFDM('')|"
+                                                th:text="#{add.contract.modal.button.add.fdm}"
+                                                type="button"></button>
+                                    </div>
+
+                                    <table class="table table-sm table-bordered" id="fdms">
+                                        <tr>
+                                            <th th:text="#{add.contract.modal.step5.content.fdm-table.header.year}"></th>
+                                            <th th:text="#{add.contract.modal.step5.content.fdm-table.header.month}"></th>
+                                            <th th:text="#{add.contract.modal.step5.content.fdm-table.header.category}"></th>
+                                            <th th:text="#{add.contract.modal.step5.content.fdm-table.header.project}"></th>
+                                            <th th:text="#{add.contract.modal.step5.content.fdm-table.header.amount}"></th>
+                                            <th th:text="#{add.contract.modal.step5.content.fdm-table.header.amount-vat}"></th>
+                                            <th></th>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" id="stepContract5Prew"
+                                            onclick="stepContract5PrewFunction()"
+                                            th:text="#{add.contract.modal.button.prew}"
+                                            type="button"></button>
+                                    <button class="btn btn-secondary" disabled id="stepContract5Next"
+                                            th:text="#{add.contract.modal.button.next}" type="button"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button aria-hidden="true" class="btn btn-secondary" data-dismiss="modal"
+                                th:text="#{add.contract.modal.button.cancel}" type="button"></button>
+                        <button class="btn btn-primary" th:text="#{add.contract.modal.button.save}"
+                                type="submit"></button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

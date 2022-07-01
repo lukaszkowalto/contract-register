@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<div th:fragment="add-project">
+    <div aria-hidden="true" aria-labelledby="addProjectModal" class="modal fade" data-backdrop="static"
+         data-keyboard="false"
+         id="add-project-modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" id="wizard-title" th:text="#{add.project.modal.title}"></h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form align="center" id="add-project" method="post" th:action="@{/project}" th:object="${projectForm}">
+                    <input hidden th:name="callingInterface" th:value="${callingInterface}" type="text"/>
+                    <div class="modal-body">
+                        <div class="navbar">
+                            <div class="navbar-inner">
+                                <ul class="nav nav-tabs " id="tabListProject" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" data-step="1" data-toggle="tab" href="#stepProject1"
+                                           onclick="stepProject1Function(event)" role="tab"
+                                           th:text="#{add.project.modal.step1.title}"></a>
+                                    <li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" data-step="2" data-toggle="tab" href="#stepProject2"
+                                           onclick="stepProject2Function(event)"
+                                           role="tab"
+                                           th:text="#{add.project.modal.step2.title}"></a>
+                                    <li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" data-step="3" data-toggle="tab" href="#stepProject3"
+                                           onclick="stepProject3Function(event)"
+                                           role="tab"
+                                           th:text="#{add.project.modal.step3.title}"></a>
+                                    <li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="progress mt-2">
+                            <div aria-valuemax="3" aria-valuemin="1" aria-valuenow="1"
+                                 class="progress-bar progress-bar-success" role="progressbar" style="width: 33%"
+                                 th:text="#{add.project.modal.progressbar.step1}"></div>
+                        </div>
+
+                        <div class="tab-content mt-2">
+                            <!--=========================================STEP 1===================================-->
+                            <div class="tab-pane fade show active" id="stepProject1">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="project-year"
+                                               th:text="#{add.project.modal.step1.content.project-year}"></label>
+                                        <select class="form-control selectpicker" data-live-search="true"
+                                                id="project-year" onchange="getParentProjectList()" required
+                                                th:field="*{year}" th:name="projectYear">
+                                            <option selected="selected" style=" display: none;"
+                                                    th:text="#{add.project.select.option.placeholder}"
+                                                    value=""></option>
+                                            <option th:each="year_opt : ${years}" th:text="${year_opt}"
+                                                    th:value="${year_opt}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="project-type"
+                                               th:text="#{add.category.modal.step2.content.category-type}"></label>
+                                        <select class="form-control selectpicker" data-live-search="true"
+                                                id="project-type" onchange="getParentProjectList()" required
+                                                th:field="*{projectType}" th:name="projectType">
+                                            <option selected="selected" style=" display: none;"
+                                                    th:text="#{add.project.select.option.placeholder}"
+                                                    value=""></option>
+                                            <option th:each="type_opt : ${T(controlling.contractRegister.dic.ProjectType).values()}"
+                                                    th:text="${type_opt.name}" th:value="${type_opt}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-3">
+                                        <label for="project-parent"
+                                               th:text="#{add.project.modal.step1.content.project-parent}"></label>
+                                        <select class="form-control selectpicker" data-live-search="true"
+                                                id="project-parent" th:field="*{parentProjectId}"
+                                                th:name="projectParent">
+                                            <option selected="selected"
+                                                    th:text="#{add.project.select.option.placeholder}"
+                                                    value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" disabled id="stepProject1Prew"
+                                            th:text="#{add.project.modal.button.prew}" type="button"></button>
+                                    <button class="btn btn-secondary" id="stepProject1Next"
+                                            onclick="stepProject1NextFunction()"
+                                            th:text="#{add.project.modal.button.next}"
+                                            type="button"></button>
+                                </div>
+
+                            </div>
+                            <!--=========================================STEP 2===================================-->
+                            <div class="tab-pane fade" id="stepProject2">
+                                <div class="form row">
+                                    <div class="form-group col-md-12 mb-3">
+                                        <label for="project-symbol"
+                                               th:text="#{add.project.modal.step1.content.project-symbol}"></label>
+                                        <input class="form-control" id="project-symbol" maxlength="32"
+                                               minlength="1" required th:field="*{symbol}" th:name="projectSymbol"
+                                               type="text">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class=" form-group col-md-12 mb-3">
+                                        <label for="project-name"
+                                               th:text="#{add.project.modal.step2.content.project-name}"></label>
+                                        <input class="form-control" id="project-name" maxlength="256" minlength="1"
+                                               required th:field="*{name}" th:name="projectName" type="text">
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" id="stepProject2Prew"
+                                            onclick="stepProject2PrewFunction()"
+                                            th:text="#{add.project.modal.button.prew}"
+                                            type="button"></button>
+                                    <button class="btn btn-secondary" id="stepProject2Next"
+                                            onclick="stepProject2NextFunction()"
+                                            th:text="#{add.project.modal.button.next}"
+                                            type="button"></button>
+                                </div>
+
+                            </div>
+                            <!--=========================================STEP 3===================================-->
+                            <div class="tab-pane fade" id="stepProject3">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="project-date-from"
+                                               th:text="#{add.project.modal.step3.content.project-date-from}"></label>
+                                        <input class="form-control" id="project-date-from"
+                                               onchange="limitDateToProject(event)"
+                                               required th:field="*{dateFrom}" th:name="dateFrom"
+                                               type="date">
+                                    </div>
+
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="project-date-to"
+                                               th:text="#{add.project.modal.step3.content.project-date-to}"></label>
+                                        <input class="form-control" id="project-date-to"
+                                               onchange="limitDateFromProject(event)"
+                                               th:field="*{dateTo}"
+                                               th:name="dateTo" type="date">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class=" form-group col-md-12 mb-3">
+                                        <label for="project-description"
+                                               th:text="#{add.project.modal.step3.content.project-description}"></label>
+                                        <textarea class="form-control" id="project-description"
+                                                  maxlength="2048" rows="3" th:field="*{description}"
+                                                  th:name="projectDescription"> </textarea>
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-secondary" id="stepProject3Prew"
+                                            onclick="stepProject3PrewFunction()"
+                                            th:text="#{add.project.modal.button.prew}"
+                                            type="button"></button>
+                                    <button class="btn btn-secondary" disabled id="stepProject3Next"
+                                            th:text="#{add.project.modal.button.next}" type="button"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button aria-hidden="true" class="btn btn-secondary" data-dismiss="modal"
+                                onclick="resetModalProject()"
+                                th:text="#{add.project.modal.button.cancel}" type="button"></button>
+                        <button class="btn btn-primary" th:text="#{add.project.modal.button.save}"
+                                type="submit"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

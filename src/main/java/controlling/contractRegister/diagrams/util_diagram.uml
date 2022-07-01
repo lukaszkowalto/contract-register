@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="75.5" y="47.5">controlling.contractRegister.util.DateUtil</node>
+    <node x="68.0" y="105.0">controlling.contractRegister.util.IntegerUtil</node>
+    <node x="67.0" y="-15.0">controlling.contractRegister.util.DoubleUtil</node>
+    <node x="-60.5" y="47.5">controlling.contractRegister.util.FileUtil</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Compact" zoom="1.0" showDependencies="false" x="376.5" y="198.5" />
+  <SelectedNodes>
+    <node>controlling.contractRegister.util.IntegerUtil</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

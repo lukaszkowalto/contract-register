@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<div th:fragment="add-fdm">
+    <div class="modal hide fade" id="add-fdm-modal" data-backdrop="static" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" th:text="#{add.fdm.modal.title}"></h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form align="center" id="add-fdm-form">
+                    <div class="modal-body">
+                        <input id="fdm-contract-id" type="hidden" value=""/>
+                        <div class="form row">
+                            <div class="form-group col-md-6 mb-3">
+                                <label for="fdm-year"
+                                       th:text="#{add.contract.modal.step5.content.fdm-table.header.year}"></label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                        id="fdm-year" onchange="getCategoryAndProjectList()" required>
+                                    <option selected="selected" style=" display: none;"
+                                            th:text="#{add.contract.select.option.placeholder}"
+                                            value=""></option>
+                                    <option th:each="year_opt : ${years}" th:text="${year_opt}"
+                                            th:value="${year_opt}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label for="fdm-month"
+                                       th:text="#{add.contract.modal.step5.content.fdm-table.header.month}"></label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                        id="fdm-month" required>
+                                    <option selected="selected" style=" display: none;"
+                                            th:text="#{add.contract.select.option.placeholder}"
+                                            value=""></option>
+                                    <option th:each="i : ${#numbers.sequence(1, 12)}" th:text="${i}"
+                                            th:value="${i}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12 mb-3">
+                                <label for="fdm-category"
+                                       th:text="#{add.contract.modal.step5.content.fdm-table.header.category}"></label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                        id="fdm-category" required>
+                                    <option selected="selected"
+                                            th:text="#{add.contract.select.option.placeholder}"
+                                            value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12 mb-3">
+                                <label for="fdm-project"
+                                       th:text="#{add.contract.modal.step5.content.fdm-table.header.project}"></label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                        id="fdm-project" required>
+                                    <option selected="selected"
+                                            th:text="#{add.contract.select.option.placeholder}"
+                                            value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-3">
+                                <label for="fdm-amount"
+                                       th:text="#{add.contract.modal.step5.content.fdm-table.header.amount}"></label>
+                                <input class="form-control" id="fdm-amount" max="999999999" min="0" required
+                                       step="0.01" type="number">
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label for="fdm-amount-vat"
+                                       th:text="#{add.contract.modal.step5.content.fdm-table.header.amount-vat}"></label>
+                                <input class="form-control" id="fdm-amount-vat" max="999999999" min="0"
+                                       required step="0.01" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button aria-hidden="true" class="btn btn-secondary" data-dismiss="modal"
+                                th:text="#{add.fdm.modal.button.cancel}" type="button"></button>
+                        <button class="btn btn-primary" onclick="addFDM(document.getElementById('fdm-contract-id').value)"
+                                th:text="#{add.fdm.modal.button.add}"
+                                type="button"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

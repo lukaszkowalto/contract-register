@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="contracts-stats">
+
+    <table class="table table-hover table-responsive-md">
+        <thead class="bg-secondary text-white">
+        <tr>
+            <th th:text="#{contracts-stats.header.measure}"></th>
+            <th th:text="#{contracts-stats.header.value}"></th>
+            <th th:text="#{contracts-stats.header.trend}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="font-weight-bold" th:text="#{contracts-stats.measure.name.number}"></td>
+            <td th:text="${#numbers.formatInteger(contractStats.numberOfContracts, 1, 'WHITESPACE')}">
+            </td>
+            <td th:class="${contractStats.numberOfContractsTrend < 0.0} ? 'text-danger' : 'text-success'">
+                <span th:if="${contractStats.numberOfContractsTrend < 0.0}"> <i class="bi bi-arrow-down"></i></span>
+                <span th:unless="${contractStats.numberOfContractsTrend < 0.0}"> <i class="bi bi-arrow-up"></i></span>
+                <span th:text="${#numbers.formatInteger(contractStats.numberOfContractsTrend, 1, 'WHITESPACE')} + '%'"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold"
+                th:text="#{contracts-stats.measure.name.gross-amount}"></td>
+            <td th:text="${#numbers.formatDecimal(contractStats.grossAmountOfContracts, 1, 'WHITESPACE', 2, 'DEFAULT')}"></td>
+            <td th:class="${contractStats.grossAmountOfContractsTrend < 0.0} ? 'text-danger' : 'text-success'">
+                <span th:if="${contractStats.grossAmountOfContractsTrend < 0.0}"> <i
+                        class="bi bi-arrow-down"></i></span>
+                <span th:unless="${contractStats.grossAmountOfContractsTrend < 0.0}"> <i
+                        class="bi bi-arrow-up"></i></span>
+                <span th:text="${#numbers.formatInteger(contractStats.grossAmountOfContractsTrend, 1, 'WHITESPACE')} + '%'"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="549.5" y="367.0">controlling.contractRegister.web.CategoryDTO</node>
+    <node x="559.5" y="180.0">controlling.contractRegister.web.UserDTO</node>
+    <node x="239.5" y="802.0">controlling.contractRegister.web.LoginDTO</node>
+    <node x="706.0" y="845.5">controlling.contractRegister.web.ProjectController</node>
+    <node x="-35.5" y="18.0">controlling.contractRegister.web.ContractStatsDTO</node>
+    <node x="556.5" y="62.0">controlling.contractRegister.web.UserRoleDTO</node>
+    <node x="-89.0" y="661.0">controlling.contractRegister.web.FinancialDistributionMatrixDTO</node>
+    <node x="273.0" y="155.0">controlling.contractRegister.web.CustomerDTO</node>
+    <node x="191.0" y="661.0">controlling.contractRegister.web.ContractAttachmentDTO</node>
+    <node x="-129.0" y="259.0">controlling.contractRegister.web.ContractDTO</node>
+    <node x="460.0" y="665.0">controlling.contractRegister.web.ProjectDTO</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="controlling.contractRegister.web.ContractDTO" target="controlling.contractRegister.web.ContractAttachmentDTO" relationship="TO_MANY">
+      <point x="174.0" y="181.0" />
+      <point x="-77.5" y="-49.0" />
+    </edge>
+    <edge source="controlling.contractRegister.web.ContractDTO" target="controlling.contractRegister.web.FinancialDistributionMatrixDTO" relationship="TO_MANY">
+      <point x="-6.0" y="181.0" />
+      <point x="0.0" y="-93.0" />
+    </edge>
+  </edges>
+  <settings layout="Compact" zoom="0.943010752688172" showDependencies="true" x="417.9999999999999" y="639.0" />
+  <SelectedNodes>
+    <node>controlling.contractRegister.web.ProjectController</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

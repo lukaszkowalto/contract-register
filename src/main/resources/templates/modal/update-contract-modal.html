@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="update-contract">
+    <div aria-hidden="true" aria-labelledby="editContractModalLabel" data-backdrop="static" class="modal hide fade" data-keyboard="false"
+         tabindex="-1" th:id="modal-edit-contract+${contract.id}">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" th:id="editContractModalLabel+${contract.id}"
+                        th:text="#{update.contract.modal.title}"></h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form enctype="multipart/form-data" method="post" onsubmit="return checkFDM(this);"
+                          th:action="@{/update-contract}"
+                          th:object="${contractForm}">
+                        <input class="form-control" hidden th:id="id+${contract.id}" th:name="id"
+                               th:value="${contract.id}" type="text">
+
+                        <div class="row">
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="contract-type+${contract.id}"
+                                       th:text="#{add.contract.modal.step1.content.contract-type}"></label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                        name="contractType" required th:id="contract-type+${contract.id}">
+                                    <option th:each="type_opt : ${T(controlling.contractRegister.dic.ContractType).values()}"
+                                            th:selected="${type_opt==contract.contractType}"
+                                            th:text="${type_opt.name}" th:value="${type_opt}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="document-date+${contract.id}"
+                                       th:text="#{add.contract.modal.step1.content.document-date}"></label>
+                                <input class="form-control" name="documentDate" required
+                                       th:id="document-date+${contract.id}" th:value="${contract.documentDate}"
+                                       type="date">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 mb-3">
+                                <label th:for="contract-number+${contract.id}"
+                                       th:text="#{add.contract.modal.step1.content.contract-number}"></label>
+                                <input class="form-control" maxlength="32"
+                                       minlength="1" name="contractNumber" readonly required
+                                       th:id="contract-number+${contract.id}" th:value="${contract.contractNumber}"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 mb-3">
+                                <label th:for="contract-customer+${contract.id}"
+                                       th:text="#{add.contract.modal.step1.content.contract-customer}"></label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                        name="customerId" required th:id="contract-customer+${contract.id}">
+                                    <option th:each="customer_opt : ${customers}"
+                                            th:selected="${customer_opt==contract.customer}"
+                                            th:text="${customer_opt.getCustomerHeader()}"
+                                            th:value="${customer_opt.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="contract-date-from+${contract.id}"
+                                       th:text="#{add.contract.modal.step2.content.contract-date-from}"></label>
+                                <input class="form-control" name="contractDateFrom"
+                                       onchange="limitDateToContract(event)" required
+                                       th:id="contract-date-from+${contract.id}"
+                                       th:value="${contract.contractDateFrom}" type="date">
+                            </div>
+
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="contract-date-to+${contract.id}"
+                                       th:text="#{add.contract.modal.step2.content.contract-date-to}"></label>
+                                <input class="form-control" onchange="limitDateFromContract(event)"
+                                       th:id="contract-date-to+${contract.id}" th:name="contractDateTo"
+                                       th:value="${contract.contractDateTo}" type="date">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class=" form-group col-md-12 mb-3">
+                                <label th:for="contract-details+${contract.id}"
+                                       th:text="#{add.contract.modal.step2.content.contract-details}"></label>
+                                <textarea class="form-control" maxlength="4000"
+                                          required rows="5" th:id="contract-details+${contract.id}"
+                                          th:name="contractDetails"
+                                          th:text="${contract.contractDetails}"> </textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="contract-currency+${contract.id}"
+                                       th:text="#{add.contract.modal.step3.content.currency}"></label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                        required
+                                        th:attr="onchange=|currencyChanged('${contract.id}')|"
+                                        th:id="contract-currency+${contract.id}" th:name="currency">
+                                    <option th:each="curr_opt : ${T(controlling.contractRegister.dic.Currency).values()}"
+                                            th:selected="${curr_opt==contract.currency}"
+                                            th:text="${curr_opt.name}" th:value="${curr_opt}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="contract-exchange-rate+${contract.id}"
+                                       th:text="#{add.contract.modal.step3.content.contract-exchange-rate}"></label>
+                                <input PLN class="form-control" max="100"
+                                       min="0" required step="0.01"
+                                       th:id="contract-exchange-rate+${contract.id}"
+                                       th:name="exchangeRate" th:readonly="${contract.currency.name == 'złoty polski'}"
+                                       th:value="${contract.exchangeRate}"
+                                       type="number">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="contract-amount+${contract.id}"
+                                       th:text="#{add.contract.modal.step3.content.contract-amount}"></label>
+                                <input class="form-control" max="999999999" min="0"
+                                       required step="0.01"
+                                       th:id="contract-amount+${contract.id}" th:name="amount"
+                                       th:value="${contract.amount}" type="number">
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label th:for="contract-amountVAT+${contract.id}"
+                                       th:text="#{add.contract.modal.step3.content.contract-amountVAT}"></label>
+                                <input class="form-control" max="999999999" min="0"
+                                       required
+                                       step="0.01" th:id="contract-amountVAT+${contract.id}" th:name="amountVAT"
+                                       th:value="${contract.amountVAT}"
+                                       type="number">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 mb-3">
+                                <label th:for="contract-remarks+${contract.id}"
+                                       th:text="#{add.contract.modal.step4.content.contract-remarks}"></label>
+                                <textarea class="form-control" maxlength="4000" rows="5"
+                                          th:id="contract-remarks+${contract.id}"
+                                          th:name="remarks" th:text="${contract.remarks}"> </textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 mb-3">
+                                <button class="btn btn-secondary"
+                                        th:attr="onclick=|prepareModalAddFile('${contract.id}')|"
+                                        th:id="addFile+${contract.id}"
+                                        th:text="#{add.contract.modal.button.add.file}"
+                                        type="button"></button>
+                            </div>
+
+                            <table class="table table-sm table-bordered" th:id="files+${contract.id}">
+                                <thead>
+                                <tr>
+                                    <th style="display:none;"
+                                        th:text="#{update.contract.modal.content.files-table.header.id}"></th>
+                                    <th th:text="#{add.contract.modal.step4.content.files-table.header.file}"></th>
+                                    <th th:text="#{add.contract.modal.step4.content.files-table.header.description}"></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="attachment: ${contract.contractAttachments}">
+                                    <td style="display:none;">
+                                        <input th:name="'contractAttachmentDTOS['+${attachmentStat.index}+'].id'"
+                                               th:value="${attachment.id}">
+                                    </td>
+                                    <td th:id="file-path_+${contract.id}+'_'+${attachmentStat.index}"
+                                        th:text="${attachment.fileName}">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" required
+                                               th:name="'contractAttachmentDTOS['+${attachmentStat.index}+'].description'"
+                                               th:value="${attachment.description}"
+                                               type="text"/>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm"
+                                                onclick="removeRow(this)"
+                                                th:name="delete_file_+${contract.id}+'_'+${attachment.id}"
+                                                type="button">
+                                            <span class="btn-label"><i class="fas fa-trash-alt"></i></span>
+                                        </button>
+                                        <a th:href="@{/download(id=${attachment.id})}">
+                                            <button class="btn btn-primary btn-sm" type="button">
+                                                <span class="btn-label"><i class="fas fa-file-download"></i></span>
+                                            </button>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12 mb-3">
+                                <button class="btn btn-secondary"
+                                        th:attr="onclick=|prepareModalAddFDM('${contract.id}')|"
+                                        th:id="addFDM+${contract.id}"
+                                        th:text="#{add.contract.modal.button.add.fdm}"
+                                        type="button">
+                                </button>
+                            </div>
+
+                            <table class="table table-sm table-bordered" th:id="fdms+${contract.id}">
+                                <thead>
+                                <tr>
+                                    <th style="display:none;"
+                                        th:text="#{update.contract.modal.content.fdm-table.header.id}"></th>
+                                    <th th:text="#{add.contract.modal.step5.content.fdm-table.header.year}"></th>
+                                    <th th:text="#{add.contract.modal.step5.content.fdm-table.header.month}"></th>
+                                    <th th:text="#{add.contract.modal.step5.content.fdm-table.header.category}"></th>
+                                    <th th:text="#{add.contract.modal.step5.content.fdm-table.header.project}"></th>
+                                    <th th:text="#{add.contract.modal.step5.content.fdm-table.header.amount}"></th>
+                                    <th th:text="#{add.contract.modal.step5.content.fdm-table.header.amount-vat}"></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="fdm : ${contract.financialDistributionMatrix}">
+                                    <div class="row">
+                                        <td style="display:none;">
+                                            <input th:name="'fdmDTOS['+${fdmStat.index}+'].id'" th:value="${fdm.id}">
+                                        </td>
+                                        <td class="col-md-1">
+                                            <input class="form-control" readonly="true"
+                                                   required
+                                                   th:attr="onchange=|getCategoryAndProjectList('${contract.id}+'_'+${fdmStat.index}+')|"
+                                                   th:id="fdm-year+${contract.id}+'_'+${fdmStat.index}"
+                                                   th:name="'fdmDTOS['+${fdmStat.index}+'].year'"
+                                                   th:value="${#numbers.formatDecimal(fdm.year,4,0)}"
+                                                   type="number"
+                                            />
+                                        </td>
+                                        <td class="col-md-1">
+                                            <select class="form-control selectpicker"
+                                                    required th:id="fdm-month+${contract.id}+'_'+${fdmStat.index}"
+                                                    th:name="'fdmDTOS['+${fdmStat.index}+'].month'">
+                                                <option th:disabled="${i==fdm.month} ? 'false' : 'true'"
+                                                        th:each="i : ${#numbers.sequence(1, 12)}"
+                                                        th:selected="${i==fdm.month}"
+                                                        th:text="${i}"
+                                                        th:value="${i}"></option>
+                                            </select>
+                                        </td>
+                                        <td class="col-md-3">
+                                            <select class="form-control selectpicker"
+                                                    required
+                                                    th:name="'fdmDTOS['+${fdmStat.index}+'].categoryId'">
+                                                <option th:disabled="${category_opt==fdm.category} ? 'false' : 'true'"
+                                                        th:each="category_opt : ${categories}"
+                                                        th:selected="${category_opt==fdm.category}"
+                                                        th:text="${category_opt.getCategoryHeader()}"
+                                                        th:value="${category_opt.id}"></option>
+                                            </select>
+                                        </td>
+                                        <td class="col-md-3">
+                                            <select class="form-control selectpicker"
+                                                    required
+                                                    th:name="'fdmDTOS['+${fdmStat.index}+'].projectId'">
+                                                <option th:disabled="${project_opt==fdm.project} ? 'false' : 'true'"
+                                                        th:each="project_opt : ${projects}"
+                                                        th:selected="${project_opt==fdm.project}"
+                                                        th:text="${project_opt.getProjectHeader()}"
+                                                        th:value="${project_opt.id}"></option>
+                                            </select>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <input class="form-control" max="999999999" min="0"
+                                                   required step="0.01"
+                                                   th:name="'fdmDTOS['+${fdmStat.index}+'].amount'"
+                                                   th:value="${fdm.amount}"
+                                                   type="number"
+                                            />
+                                        </td>
+                                        <td class="col-md-2">
+                                            <input class="form-control" max="999999999" min="0"
+                                                   required step="0.01"
+                                                   th:name="'fdmDTOS['+${fdmStat.index}+'].amountVAT'"
+                                                   th:value="${fdm.amountVAT}"
+                                                   type="number"
+                                            />
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm"
+                                                    onclick="removeRow(this)"
+                                                    th:name="delete_fdm_+${fdmStat.index}"
+                                                    type="button">
+                                                <span class="btn-label"><i class="fas fa-trash-alt"></i></span>
+                                            </button>
+                                        </td>
+                                    </div>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-danger" th:id="save-contract+${contract.id}"
+                                th:text="#{add.contract.modal.button.save}"
+                                type="submit"></button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button aria-hidden="true" class="btn btn-secondary" data-dismiss="modal"
+                            th:text="#{add.contract.modal.button.cancel}"
+                            type="button"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

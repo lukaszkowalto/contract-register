@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container">
+    <div class="card my-5">
+        <div class="card-body">
+            <h1>${templateParams.messages[0]} <b>${templateParams.messages[4]}</b>!</h1>
+            <h5 class="text-muted mb-2">${templateParams.messages[1]} <br></h5>
+            <a class="btn btn-primary"
+               href="http://${templateParams.properties[0]}:${templateParams.properties[1]}/confirm-account?token=${templateParams.messages[3]}">${templateParams.messages[2]}</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

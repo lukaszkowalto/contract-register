@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<div th:fragment="add-file">
+    <div class="modal hide fade" id="add-file-modal" data-backdrop="static" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" th:text="#{add.file.modal.title}"></h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form align="center" id="add-file-form">
+                    <div class="modal-body">
+                        <input id="af-contract-id" type="hidden" value=""/>
+                        <div class="form row">
+                            <div class="form-group col-md-12 mb-3">
+                                <label for="file-path"
+                                       th:text="#{add.file.modal.content.file-path}"></label>
+                                <input class="form-control-file" id="file-path"
+                                       required type="file">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class=" form-group col-md-12 mb-3">
+                                <label for="file-description"
+                                       th:text="#{add.file.modal.content.file-description}"></label>
+                                <input class="form-control" id="file-description"
+                                       maxlength="256" minlength="1" required type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button aria-hidden="true" class="btn btn-secondary" data-dismiss="modal"
+                                th:text="#{add.file.modal.button.cancel}" type="button"></button>
+                        <button class="btn btn-primary"
+                                onclick="addFile(document.getElementById('af-contract-id').value)"
+                                th:text="#{add.file.modal.button.add}" type="button"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
